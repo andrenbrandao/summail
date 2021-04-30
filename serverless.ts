@@ -3,7 +3,7 @@ import type { AWS } from '@serverless/typescript';
 import { hello } from './src/functions';
 
 const serverlessConfiguration: AWS = {
-  service: 'serverless-typescript',
+  service: 'weekly-newsletter-email',
   frameworkVersion: '2',
   useDotenv: true,
   custom: {

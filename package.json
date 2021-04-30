@@ -1,7 +1,7 @@
 {
-  "name": "serverless-typescript",
+  "name": "weekly-newsletter-email",
   "version": "1.0.0",
-  "description": "Serverless aws-nodejs-typescript template",
+  "description": "Weekly Newsletter Emails built with Serverless, OAuth2 and Gmail.",
   "main": "serverless.ts",
   "scripts": {
     "start": "serverless offline --httpPort=4000",
@@ -52,6 +52,6 @@
     "webpack": "^5.4.0",
     "webpack-node-externals": "^2.5.2"
   },
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "author": "André Brandão <andrenbrandao@gmail.com>",
   "license": "MIT"
 }
