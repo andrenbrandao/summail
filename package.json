@@ -17,7 +17,8 @@
     "@middy/core": "^1.5.0",
     "@middy/http-json-body-parser": "^1.5.0",
     "source-map-support": "^0.5.19",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "googleapis": "^73.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
