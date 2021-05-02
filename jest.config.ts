@@ -10,5 +10,6 @@ export default {
   testMatch: ['**/*.spec.ts'],
   moduleNameMapper: {
     '@libs/(.*)': '<rootDir>/src/libs/$1',
+    '@shared/(.*)': '<rootDir>/src/shared/$1',
   },
 };
