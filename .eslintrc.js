@@ -23,6 +23,12 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'prettier/prettier': 'error',
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['**/*.spec.ts', '**/*.test.ts'],
+      },
+    ],
   },
   settings: {
     'import/resolver': {

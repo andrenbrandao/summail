@@ -5,7 +5,11 @@ import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import { getTokensFromCode, getEmailAddress } from '@services/google';
 
-const oauthCallback: APIGatewayProxyHandlerV2 = async (event) => {
+const oauthCallback: APIGatewayProxyHandlerV2 = async (event, context) => {
+  // Make sure to add this so you can re-use `conn` between function calls.
+  // https://mongoosejs.com/docs/lambda.html
+  context.callbackWaitsForEmptyEventLoop = false;
+
   const { code } = event.queryStringParameters;
 
   const { accessToken } = await getTokensFromCode(code);
