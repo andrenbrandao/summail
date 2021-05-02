@@ -4,8 +4,6 @@ import { logger } from '@shared/logger';
 // See API docs: http://mongoosejs.com/docs/lambda.html
 let cacheDB: Connection;
 
-logger.info(`CachedDB: ${JSON.stringify(cacheDB)}`);
-
 const getConnection = async (): Promise<Connection> => {
   if (cacheDB && cacheDB.readyState === 1) {
     logger.info('Reusing existing connection...');

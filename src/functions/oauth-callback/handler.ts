@@ -5,6 +5,9 @@ import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import { getTokensFromCode, getEmailAddress } from '@services/google';
 
+import { getConnection } from '@libs/mongodb';
+import { createUser } from '@services/database/mongodb/repositories/UserRepository';
+
 const oauthCallback: APIGatewayProxyHandlerV2 = async (event, context) => {
   // Make sure to add this so you can re-use `conn` between function calls.
   // https://mongoosejs.com/docs/lambda.html
@@ -12,8 +15,11 @@ const oauthCallback: APIGatewayProxyHandlerV2 = async (event, context) => {
 
   const { code } = event.queryStringParameters;
 
-  const { accessToken } = await getTokensFromCode(code);
+  const { accessToken, refreshToken } = await getTokensFromCode(code);
   const emailAddress = await getEmailAddress(accessToken);
+
+  await getConnection();
+  await createUser({ email: emailAddress, refreshToken });
 
   return formatJSONResponse({
     message: 'Successfully authenticated with Google Account.',
