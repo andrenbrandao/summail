@@ -13,4 +13,5 @@ export default {
     '@shared/(.*)': '<rootDir>/src/shared/$1',
     '@services/(.*)': '<rootDir>/src/services/$1',
   },
+  setupFiles: ['<rootDir>/jest.setEnvVars.js'],
 };

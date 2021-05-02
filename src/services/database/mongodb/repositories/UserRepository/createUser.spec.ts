@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import mongoose, { ConnectOptions } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import User from './User';
+import User from '../../models/User';
+import createUser from './createUser';
 
 jest.mock('@libs/mongodb');
 
@@ -34,13 +35,13 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
-it('should be able to create a new user', async () => {
-  await User.create({
+it('should encrypt the refresh token', async () => {
+  await createUser({
     email: 'user@email.com',
     refreshToken: 'refresh-token',
   });
 
   const userStored = await User.findOne();
 
-  expect(userStored.email).toEqual('user@email.com');
+  expect(userStored.refreshToken).not.toEqual('refresh-token');
 });
