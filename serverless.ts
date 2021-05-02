@@ -35,6 +35,7 @@ const serverlessConfiguration: AWS = {
       OAUTH_TOKEN_URI: '${env:OAUTH_TOKEN_URI}',
       OAUTH_PROVIDER_X509_CERT_URL: '${env:OAUTH_PROVIDER_X509_CERT_URL}',
       MONGODB_URI: '${env:MONGODB_URI}',
+      CRYPTO_SECRET_KEY: '${env:CRYPTO_SECRET_KEY}',
     },
     lambdaHashingVersion: '20201221',
   },
