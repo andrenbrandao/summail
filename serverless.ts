@@ -1,7 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
 import type { AWS } from '@serverless/typescript';
 
-import { hello, oauth } from './src/functions';
+import { hello, oauth, oauthCallback } from './src/functions';
 
 const serverlessConfiguration: AWS = {
   service: 'weekly-newsletter-email',
@@ -37,7 +37,7 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: '20201221',
   },
-  functions: { hello, oauth },
+  functions: { hello, oauth, oauthCallback },
 };
 
 module.exports = serverlessConfiguration;

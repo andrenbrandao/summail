@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@libs/*": ["src/libs/*"],
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@services/*": ["src/services/*"]
     }
   }
 }

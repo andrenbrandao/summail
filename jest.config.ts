@@ -11,5 +11,6 @@ export default {
   moduleNameMapper: {
     '@libs/(.*)': '<rootDir>/src/libs/$1',
     '@shared/(.*)': '<rootDir>/src/shared/$1',
+    '@services/(.*)': '<rootDir>/src/services/$1',
   },
 };
