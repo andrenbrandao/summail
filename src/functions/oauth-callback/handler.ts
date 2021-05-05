@@ -7,11 +7,13 @@ import { getTokensFromCode, getEmailAddress } from '@services/google';
 
 import { getConnection } from '@libs/mongodb';
 import { createUser } from '@services/database/mongodb/repositories/UserRepository';
+import { logger } from '@shared/logger';
 
 const oauthCallback: APIGatewayProxyHandlerV2 = async (event, context) => {
   // Make sure to add this so you can re-use `conn` between function calls.
   // https://mongoosejs.com/docs/lambda.html
   context.callbackWaitsForEmptyEventLoop = false;
+  logger.info(event);
 
   const { code } = event.queryStringParameters;
 
