@@ -3,7 +3,7 @@ import User, { IUser } from '@services/database/mongodb/models/User';
 
 import { encrypt } from '@shared/crypto';
 
-const createUser = async (user: IUser): Promise<void> => {
+const saveUser = async (user: IUser): Promise<void> => {
   const { email, refreshToken } = user;
 
   const encryptedRefreshToken = encrypt(refreshToken);
@@ -22,4 +22,4 @@ const createUser = async (user: IUser): Promise<void> => {
   logger.info('Successfully updated/upserted user');
 };
 
-export default createUser;
+export default saveUser;

@@ -2,7 +2,7 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import User from '../../models/User';
-import createUser from './createUser';
+import saveUser from './saveUser';
 
 jest.mock('@libs/mongodb');
 
@@ -39,7 +39,7 @@ afterAll(async () => {
 it('should create if does not yet exist', async () => {
   const firstUsers = await User.find();
 
-  await createUser({
+  await saveUser({
     email: 'user@email.com',
     refreshToken: 'refresh-token',
   });
@@ -51,7 +51,7 @@ it('should create if does not yet exist', async () => {
 });
 
 it('should encrypt the refresh token', async () => {
-  await createUser({
+  await saveUser({
     email: 'user@email.com',
     refreshToken: 'refresh-token',
   });
@@ -62,12 +62,12 @@ it('should encrypt the refresh token', async () => {
 });
 
 it('should update user with the same email', async () => {
-  await createUser({
+  await saveUser({
     email: 'user@email.com',
     refreshToken: 'refresh-token',
   });
 
-  await createUser({
+  await saveUser({
     email: 'user@email.com',
     refreshToken: 'different-refresh-token',
   });
@@ -82,7 +82,7 @@ it('should throw error if it fails to upsert', async () => {
     .mockResolvedValue({ n: 0, ok: 0, nModified: 0 });
 
   await expect(
-    createUser({
+    saveUser({
       email: 'user@email.com',
       refreshToken: 'refresh-token',
     }),

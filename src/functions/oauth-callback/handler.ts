@@ -6,7 +6,7 @@ import { middyfy } from '@libs/lambda';
 import { getTokensFromCode, getEmailAddress } from '@services/google';
 
 import { getConnection } from '@libs/mongodb';
-import { createUser } from '@services/database/mongodb/repositories/UserRepository';
+import { saveUser } from '@services/database/mongodb/repositories/UserRepository';
 import { logger } from '@shared/logger';
 
 const oauthCallback: APIGatewayProxyHandlerV2 = async (event, context) => {
@@ -21,7 +21,7 @@ const oauthCallback: APIGatewayProxyHandlerV2 = async (event, context) => {
   const emailAddress = await getEmailAddress(accessToken);
 
   await getConnection();
-  await createUser({ email: emailAddress, refreshToken });
+  await saveUser({ email: emailAddress, refreshToken });
 
   return formatJSONResponse({
     message: 'Successfully authenticated with Google Account.',

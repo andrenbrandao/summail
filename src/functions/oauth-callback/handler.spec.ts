@@ -1,7 +1,7 @@
 import type { Context, Callback } from 'aws-lambda';
 import { getTokensFromCode, getEmailAddress } from '@services/google';
 import { getConnection } from '@libs/mongodb';
-import { createUser } from '@services/database/mongodb/repositories/UserRepository';
+import { saveUser } from '@services/database/mongodb/repositories/UserRepository';
 import { main as handler } from './handler';
 
 import mockEvent from './mock.json';
@@ -9,7 +9,7 @@ import mockEvent from './mock.json';
 jest.mock('@services/google/getTokensFromCode');
 jest.mock('@services/google/getEmailAddress');
 jest.mock('@libs/mongodb');
-jest.mock('@services/database/mongodb/repositories/UserRepository/createUser');
+jest.mock('@services/database/mongodb/repositories/UserRepository/saveUser');
 
 const mockedGetTokensFromCode = getTokensFromCode as jest.MockedFunction<
   typeof getTokensFromCode
@@ -69,7 +69,7 @@ describe('when a get request is made', () => {
 
     await handler(event, context, callback);
 
-    expect(createUser).toHaveBeenCalledWith({
+    expect(saveUser).toHaveBeenCalledWith({
       email: 'user@gmail.com',
       refreshToken: 'refresh-token',
     });
