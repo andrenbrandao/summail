@@ -13,6 +13,7 @@ const opts: ConnectOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
+  useCreateIndex: true,
 };
 
 beforeAll(async () => {

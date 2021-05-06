@@ -1,21 +1,25 @@
 import { logger } from '@shared/logger';
-import User, {
-  IUser,
-  IUserModel,
-} from '@services/database/mongodb/models/User';
+import User, { IUser } from '@services/database/mongodb/models/User';
 
 import { encrypt } from '@shared/crypto';
 
-const createUser = async (user: IUser): Promise<IUserModel> => {
+const createUser = async (user: IUser): Promise<void> => {
   const { email, refreshToken } = user;
 
-  const userWithEncryptedToken = { email, refreshToken: encrypt(refreshToken) };
+  const encryptedRefreshToken = encrypt(refreshToken);
 
-  logger.info('Saving user...', userWithEncryptedToken);
-  const userCreated = await User.create(userWithEncryptedToken);
+  logger.info('Saving user...', { email, encryptedRefreshToken });
+  const result = await User.updateOne(
+    { email },
+    { refreshToken: encryptedRefreshToken },
+    { upsert: true },
+  );
 
-  logger.info('Successfully created user', userCreated);
-  return userCreated;
+  if (!result.ok) {
+    throw Error('Could not update or upsert user.');
+  }
+
+  logger.info('Successfully updated/upserted user');
 };
 
 export default createUser;

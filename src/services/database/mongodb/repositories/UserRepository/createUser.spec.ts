@@ -14,6 +14,7 @@ const opts: ConnectOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
+  useCreateIndex: true,
 };
 
 beforeAll(async () => {
@@ -35,6 +36,20 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
+it('should create if does not yet exist', async () => {
+  const firstUsers = await User.find();
+
+  await createUser({
+    email: 'user@email.com',
+    refreshToken: 'refresh-token',
+  });
+
+  const users = await User.find();
+
+  expect(firstUsers.length).toEqual(0);
+  expect(users.length).toEqual(1);
+});
+
 it('should encrypt the refresh token', async () => {
   await createUser({
     email: 'user@email.com',
@@ -44,4 +59,32 @@ it('should encrypt the refresh token', async () => {
   const userStored = await User.findOne();
 
   expect(userStored.refreshToken).not.toEqual('refresh-token');
+});
+
+it('should update user with the same email', async () => {
+  await createUser({
+    email: 'user@email.com',
+    refreshToken: 'refresh-token',
+  });
+
+  await createUser({
+    email: 'user@email.com',
+    refreshToken: 'different-refresh-token',
+  });
+
+  const users = await User.find();
+  expect(users.length).toEqual(1);
+});
+
+it('should throw error if it fails to upsert', async () => {
+  jest
+    .spyOn(User, 'updateOne')
+    .mockResolvedValue({ n: 0, ok: 0, nModified: 0 });
+
+  await expect(
+    createUser({
+      email: 'user@email.com',
+      refreshToken: 'refresh-token',
+    }),
+  ).rejects.toThrow('Could not update or upsert user.');
 });
