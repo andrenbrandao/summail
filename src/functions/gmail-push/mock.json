@@ -2,5 +2,5 @@
   "headers": {
     "Content-Type": "application/json"
   },
-  "body": "{\"message\": {\"data\": \"eyJlbWFpbEFkZHJlc3MiOiAidXNlckBleGFtcGxlLmNvbSIsICJoaXN0b3J5SWQiOiAiMTIzNDU2Nzg5MCJ9\", \"message_id\": \"1234567890\" }, \"subscription\": \"projects/myproject/subscriptions/mysubscription\" }"
+  "body": "{\"message\":{\"data\":\"eyJlbWFpbEFkZHJlc3MiOiAidXNlckBleGFtcGxlLmNvbSIsICJoaXN0b3J5SWQiOiAiMTIzNDU2Nzg5MCJ9\",\"message_id\":\"1234567890\"},\"subscription\":\"projects/myproject/subscriptions/mysubscription\"}"
 }
