@@ -3,6 +3,8 @@ import { main as handler } from './handler';
 
 import mockEvent from './mock.json';
 
+jest.mock('@services/sqs');
+
 it('should log base64-encoded data', async () => {
   const event = mockEvent;
   const context = {} as Context;

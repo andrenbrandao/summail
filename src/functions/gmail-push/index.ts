@@ -1,6 +1,7 @@
+import type { AWS } from '@serverless/typescript';
 import schema from './schema';
 
-export default {
+const handler: AWS['functions']['handler'] = {
   handler: `${__dirname.split(process.cwd())[1].substring(1)}/handler.main`,
   events: [
     {
@@ -16,3 +17,5 @@ export default {
     },
   ],
 };
+
+export default handler;
