@@ -13,6 +13,28 @@ const serverlessConfiguration: AWS = {
       includeModules: true,
     },
     stages: ['local', 'dev', 'prod'],
+    stage: '${opt:stage, self:provider.stage}',
+    local: {
+      GMAIL_NOTIFICATION_QUEUE_URL: 'http://localhost:3000',
+    },
+    dev: {
+      GMAIL_NOTIFICATION_QUEUE_URL: {
+        'Fn::Join': [
+          '',
+          [
+            'https://sqs.',
+            { Ref: 'AWS::Region' },
+            '.',
+            { Ref: 'AWS::URLSuffix' },
+            '/',
+            { Ref: 'AWS::AccountId' },
+            '/',
+            { 'Fn::GetAtt': ['GmailNotificationQueue', 'QueueName'] },
+          ],
+        ],
+      },
+    },
+    prod: '${self:custom.dev}',
   },
   plugins: [
     'serverless-webpack',
@@ -43,21 +65,8 @@ const serverlessConfiguration: AWS = {
       OAUTH_PROVIDER_X509_CERT_URL: '${env:OAUTH_PROVIDER_X509_CERT_URL}',
       MONGODB_URI: '${env:MONGODB_URI}',
       CRYPTO_SECRET_KEY: '${env:CRYPTO_SECRET_KEY}',
-      GMAIL_NOTIFICATION_QUEUE_URL: {
-        'Fn::Join': [
-          '',
-          [
-            'https://sqs.',
-            { Ref: 'AWS::Region' },
-            '.',
-            { Ref: 'AWS::URLSuffix' },
-            '/',
-            { Ref: 'AWS::AccountId' },
-            '/',
-            { 'Fn::GetAtt': ['GmailNotificationQueue', 'QueueName'] },
-          ],
-        ],
-      },
+      GMAIL_NOTIFICATION_QUEUE_URL:
+        '${self:custom.${self:custom.stage}.GMAIL_NOTIFICATION_QUEUE_URL}',
     },
     lambdaHashingVersion: '20201221',
   },
@@ -70,7 +79,7 @@ const serverlessConfiguration: AWS = {
           FifoQueue: true,
           ContentBasedDeduplication: true,
           QueueName:
-            '${self:service}-${opt:stage, self:provider.stage}_GmailNotificationQueue.fifo',
+            '${self:service}-${self:custom.stage}_GmailNotificationQueue.fifo',
           RedrivePolicy: {
             deadLetterTargetArn: {
               'Fn::GetAtt': ['GmailNotificationQueueDLQ', 'Arn'],
@@ -85,7 +94,7 @@ const serverlessConfiguration: AWS = {
           FifoQueue: true,
           ContentBasedDeduplication: true,
           QueueName:
-            '${self:service}-${opt:stage, self:provider.stage}_GmailNotificationQueueDLQ.fifo',
+            '${self:service}-${self:custom.stage}_GmailNotificationQueueDLQ.fifo',
         },
       },
       GmailNotificationQueuePolicy: {

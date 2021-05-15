@@ -7,8 +7,8 @@
     "start": "serverless offline --httpPort=4000 --stage local",
     "deploy": "serverless deploy --aws-profile personal --stage dev",
     "deploy:prod": "serverless deploy --aws-profile personal --stage prod",
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch --coverage",
+    "test": "jest --passWithNoTests --runInBand",
+    "test:watch": "jest --watch --coverage --runInBand",
     "lint": "eslint '*/**/*.{js,ts}'",
     "prettier": "prettier --write '*/**/*.{js,ts}'"
   },
