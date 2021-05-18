@@ -1,7 +1,13 @@
 /* eslint-disable no-template-curly-in-string */
 import type { AWS } from '@serverless/typescript';
 
-import { hello, oauth, oauthCallback, gmailPush } from './src/functions';
+import {
+  hello,
+  oauth,
+  oauthCallback,
+  gmailPush,
+  saveEmail,
+} from './src/functions';
 
 const serverlessConfiguration: AWS = {
   service: 'weekly-newsletter-email',
@@ -70,7 +76,7 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: '20201221',
   },
-  functions: { hello, oauth, oauthCallback, gmailPush },
+  functions: { hello, oauth, oauthCallback, gmailPush, saveEmail },
   resources: {
     Resources: {
       GmailNotificationQueue: {
