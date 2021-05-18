@@ -7,10 +7,11 @@ const encrypt = (text: string): string => {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv('aes256', key, iv);
 
-  cipher.update(text, 'utf8', 'base64');
-  const encryptedPassword = cipher.final('base64');
+  const encrypted =
+    cipher.update(text, 'utf8', 'base64') + cipher.final('base64');
 
-  return `${iv.toString('hex')}:${encryptedPassword}`;
+  const encryptedIvWithValue = `${iv.toString('hex')}:${encrypted}`;
+  return encryptedIvWithValue;
 };
 
 const decrypt = (text: string): string => {
@@ -21,8 +22,8 @@ const decrypt = (text: string): string => {
     Buffer.from(iv, 'hex'),
   );
 
-  decipher.update(data, 'base64', 'utf8');
-  const decrypted = decipher.final('utf8');
+  const decrypted =
+    decipher.update(data, 'base64', 'utf8') + decipher.final('utf8');
 
   return decrypted;
 };
