@@ -16,7 +16,7 @@ const saveUser = async (user: IUser): Promise<void> => {
   );
 
   if (!result.ok) {
-    throw Error('Could not update or upsert user.');
+    throw new Error('Could not update or upsert user.');
   }
 
   logger.info('Successfully updated/upserted user');
