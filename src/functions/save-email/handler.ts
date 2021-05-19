@@ -8,7 +8,7 @@ import { getConnection } from '@libs/mongodb';
 import { getUser } from '@services/database/mongodb/repositories/UserRepository';
 import { Notification } from '@shared/interfaces';
 
-import { refreshAccessToken } from '@services/google';
+import { refreshAccessToken, getMessagesByHistoryId } from '@services/google';
 
 const saveEmail: SQSHandler = async (event, context) => {
   // Make sure to add this so you can re-use `conn` between function calls.
@@ -25,6 +25,8 @@ const saveEmail: SQSHandler = async (event, context) => {
     console.log(user);
     const accessToken = await refreshAccessToken(user.refreshToken);
     console.log(accessToken);
+    const messages = await getMessagesByHistoryId(accessToken, historyId);
+    console.log(messages);
   });
 
   await Promise.all(promises);
