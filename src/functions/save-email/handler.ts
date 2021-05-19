@@ -8,6 +8,8 @@ import { getConnection } from '@libs/mongodb';
 import { getUser } from '@services/database/mongodb/repositories/UserRepository';
 import { Notification } from '@shared/interfaces';
 
+import { refreshAccessToken } from '@services/google';
+
 const saveEmail: SQSHandler = async (event, context) => {
   // Make sure to add this so you can re-use `conn` between function calls.
   // https://mongoosejs.com/docs/lambda.html
@@ -21,6 +23,8 @@ const saveEmail: SQSHandler = async (event, context) => {
     console.log(emailAddress, historyId);
     const user = await getUser(emailAddress);
     console.log(user);
+    const accessToken = await refreshAccessToken(user.refreshToken);
+    console.log(accessToken);
   });
 
   await Promise.all(promises);
