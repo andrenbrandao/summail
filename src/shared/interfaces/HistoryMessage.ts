@@ -1,7 +1,7 @@
-interface Message {
+interface HistoryMessage {
   id?: string;
   threadId?: string;
   labelIds?: string[];
 }
 
-export default Message;
+export default HistoryMessage;

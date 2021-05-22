@@ -20,13 +20,15 @@ const saveEmail: SQSHandler = async (event, context) => {
 
   const promises = event.Records.map(async (record) => {
     const { emailAddress, historyId }: Notification = JSON.parse(record.body);
-    console.log(emailAddress, historyId);
+
     const user = await getUser(emailAddress);
-    console.log(user);
     const accessToken = await refreshAccessToken(user.refreshToken);
-    console.log(accessToken);
-    const messages = await getMessagesByHistoryId(accessToken, historyId);
-    console.log(messages);
+
+    const historyMessages = await getMessagesByHistoryId(
+      accessToken,
+      historyId,
+    );
+    console.log(historyMessages);
   });
 
   await Promise.all(promises);

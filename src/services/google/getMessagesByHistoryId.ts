@@ -1,11 +1,11 @@
 import { google } from 'googleapis';
 
-import { Message } from '@shared/interfaces';
+import { HistoryMessage } from '@shared/interfaces';
 
 const getMessagesByHistoryId = async (
   accessToken: string,
   historyId: string,
-): Promise<Message[]> => {
+): Promise<HistoryMessage[]> => {
   const oAuth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENT_ID,
     process.env.OAUTH_CLIENT_SECRET,
