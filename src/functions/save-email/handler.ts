@@ -8,7 +8,11 @@ import { getConnection } from '@libs/mongodb';
 import { getUser } from '@services/database/mongodb/repositories/UserRepository';
 import { Notification } from '@shared/interfaces';
 
-import { refreshAccessToken, getMessagesByHistoryId } from '@services/google';
+import {
+  refreshAccessToken,
+  getMessagesByHistoryId,
+  getMessageById,
+} from '@services/google';
 
 const saveEmail: SQSHandler = async (event, context) => {
   // Make sure to add this so you can re-use `conn` between function calls.
@@ -28,7 +32,14 @@ const saveEmail: SQSHandler = async (event, context) => {
       accessToken,
       historyId,
     );
-    console.log(historyMessages);
+
+    const messagePromises = historyMessages.map(async (historyMessage) => {
+      const message = await getMessageById(accessToken, historyMessage.id);
+      return message;
+    });
+
+    const messages = await Promise.all(messagePromises);
+    console.log(messages);
   });
 
   await Promise.all(promises);
