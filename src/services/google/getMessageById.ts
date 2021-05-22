@@ -1,11 +1,12 @@
 import { google } from 'googleapis';
-
 import { Message } from '@shared/interfaces';
+
+type GetMessageByIdDTO = Omit<Message, 'userEmail'>;
 
 const getMessageById = async (
   accessToken: string,
   messageId: string,
-): Promise<Message> => {
+): Promise<GetMessageByIdDTO> => {
   const oAuth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENT_ID,
     process.env.OAUTH_CLIENT_SECRET,

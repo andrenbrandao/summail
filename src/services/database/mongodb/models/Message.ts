@@ -8,6 +8,11 @@ export interface IMessageModel extends Message, Document {
 
 const MessageSchema: Schema = new Schema(
   {
+    userEmail: {
+      type: String,
+      required: true,
+      immutable: true,
+    },
     externalId: {
       type: String,
       required: true,
@@ -25,6 +30,8 @@ const MessageSchema: Schema = new Schema(
   },
   { timestamps: true },
 );
+
+MessageSchema.index({ userEmail: 1, receivedAt: 1 });
 
 const Message: Model<IMessageModel> = model('Message', MessageSchema);
 

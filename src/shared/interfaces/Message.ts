@@ -1,4 +1,5 @@
 interface Message {
+  userEmail: string;
   externalId?: string;
   historyId?: string;
   labelIds?: string[];

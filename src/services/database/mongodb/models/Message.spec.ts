@@ -37,6 +37,7 @@ afterAll(async () => {
 });
 
 const messageData: IMessage = {
+  userEmail: 'user@email.com',
   externalId: 'external-id',
   historyId: '12345',
   labelIds: ['INBOX', 'UNREAD'],
@@ -53,6 +54,17 @@ it('should be able to create a new message', async () => {
   const message = await Message.findOne().lean();
 
   expect(message).toMatchObject<IMessage>(messageData);
+});
+
+it('should not create message without userEmail', async () => {
+  const invalidMessage = {
+    ...messageData,
+    userEmail: undefined,
+  };
+
+  await expect(Message.create(invalidMessage)).rejects.toThrowError(
+    /Path `userEmail` is required./,
+  );
 });
 
 it('should not create message with same externalId', async () => {
