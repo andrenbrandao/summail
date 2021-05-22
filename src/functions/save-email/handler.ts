@@ -5,7 +5,10 @@ import { middyfy } from '@libs/lambda';
 import { logger } from '@shared/logger';
 
 import { getConnection } from '@libs/mongodb';
-import { getUser } from '@services/database/mongodb/repositories/UserRepository';
+import {
+  getUser,
+  saveMessage,
+} from '@services/database/mongodb/repositories/UserRepository';
 import { Notification } from '@shared/interfaces';
 
 import {
@@ -35,11 +38,11 @@ const saveEmail: SQSHandler = async (event, context) => {
 
     const messagePromises = historyMessages.map(async (historyMessage) => {
       const message = await getMessageById(accessToken, historyMessage.id);
+      await saveMessage({ ...message, userEmail: emailAddress });
       return message;
     });
 
-    const messages = await Promise.all(messagePromises);
-    console.log(messages);
+    await Promise.all(messagePromises);
   });
 
   await Promise.all(promises);
