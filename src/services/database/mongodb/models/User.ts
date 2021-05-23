@@ -3,6 +3,7 @@ import { Model, Schema, Document, model } from 'mongoose';
 export interface IUser {
   email: string;
   refreshToken: string;
+  lastHistoryId?: string;
 }
 
 export interface IUserModel extends IUser, Document {
@@ -14,6 +15,7 @@ const UserSchema: Schema = new Schema(
   {
     email: { type: String, required: true, index: true, unique: true },
     refreshToken: { type: String, required: true },
+    lastHistoryId: { type: String },
   },
   { timestamps: true },
 );

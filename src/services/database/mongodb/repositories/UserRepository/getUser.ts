@@ -10,7 +10,7 @@ const getUser = async (email: IUser['email']): Promise<IUser> => {
     throw new Error('User not found!');
   }
 
-  logger.info('Reading user:', user.email);
+  logger.info('Reading user: ', { email: user.email });
   const decryptedRefreshToken = decrypt(user.refreshToken);
 
   return {

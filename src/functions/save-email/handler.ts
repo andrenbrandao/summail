@@ -29,6 +29,8 @@ const saveEmail: SQSHandler = async (event, context) => {
     const { emailAddress, historyId }: Notification = JSON.parse(record.body);
 
     const user = await getUser(emailAddress);
+
+    logger.info('Refreshing access token.');
     const accessToken = await refreshAccessToken(user.refreshToken);
 
     const historyMessages = await getMessagesByHistoryId(

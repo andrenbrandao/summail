@@ -61,3 +61,19 @@ it('should fail if tries to create a new one with the same email', async () => {
     'E11000 duplicate key error dup key: { : "user@email.com" }',
   );
 });
+
+it('should be able to update the lastHistoryId', async () => {
+  await User.create({
+    email: 'user@email.com',
+    refreshToken: 'refresh-token',
+  });
+
+  await User.updateOne(
+    { email: 'user@email.com' },
+    { $set: { lastHistoryId: '12345' } },
+  );
+
+  const user = await User.findOne();
+
+  expect(user.lastHistoryId).toEqual('12345');
+});
