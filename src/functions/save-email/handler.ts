@@ -7,9 +7,9 @@ import { logger } from '@shared/logger';
 import { getConnection } from '@libs/mongodb';
 import {
   getUser,
-  saveMessage,
   updateLastHistoryId,
 } from '@services/database/mongodb/repositories/UserRepository';
+import { saveMessage } from '@services/database/mongodb/repositories/MessageRepository';
 import { Notification } from '@shared/interfaces';
 
 import {
