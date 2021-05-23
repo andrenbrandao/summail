@@ -6,6 +6,10 @@ const getMessagesByHistoryId = async (
   accessToken: string,
   historyId: string,
 ): Promise<HistoryMessage[]> => {
+  if (!historyId) {
+    return [];
+  }
+
   const oAuth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENT_ID,
     process.env.OAUTH_CLIENT_SECRET,

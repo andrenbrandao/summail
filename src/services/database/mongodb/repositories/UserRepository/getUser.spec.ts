@@ -2,8 +2,7 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import User from '../../models/User';
-import getUser from './getUser';
-import saveUser from './saveUser';
+import { getUser, saveUser, updateLastHistoryId } from '.';
 
 jest.mock('@libs/mongodb');
 
@@ -52,4 +51,19 @@ it('should raise an error if the user does not exist', async () => {
   expect(await User.findOne()).toEqual(null);
 
   await expect(getUser('user@email.com')).rejects.toThrow();
+});
+
+it('should fetch a user with lastHistoryId', async () => {
+  await saveUser({
+    email: 'user@email.com',
+    refreshToken: 'refresh-token',
+  });
+
+  await updateLastHistoryId({
+    email: 'user@email.com',
+    lastHistoryId: '12345',
+  });
+
+  const user = await getUser('user@email.com');
+  expect(user.lastHistoryId).toEqual('12345');
 });

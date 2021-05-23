@@ -16,6 +16,7 @@ const getUser = async (email: IUser['email']): Promise<IUser> => {
   return {
     email: user.email,
     refreshToken: decryptedRefreshToken,
+    lastHistoryId: user.lastHistoryId,
   };
 };
 

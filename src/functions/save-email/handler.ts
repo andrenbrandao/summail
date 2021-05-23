@@ -8,6 +8,7 @@ import { getConnection } from '@libs/mongodb';
 import {
   getUser,
   saveMessage,
+  updateLastHistoryId,
 } from '@services/database/mongodb/repositories/UserRepository';
 import { Notification } from '@shared/interfaces';
 
@@ -28,14 +29,14 @@ const saveEmail: SQSHandler = async (event, context) => {
   const promises = event.Records.map(async (record) => {
     const { emailAddress, historyId }: Notification = JSON.parse(record.body);
 
-    const user = await getUser(emailAddress);
+    const { refreshToken, lastHistoryId } = await getUser(emailAddress);
 
     logger.info('Refreshing access token.');
-    const accessToken = await refreshAccessToken(user.refreshToken);
+    const accessToken = await refreshAccessToken(refreshToken);
 
     const historyMessages = await getMessagesByHistoryId(
       accessToken,
-      historyId,
+      lastHistoryId,
     );
 
     const messagePromises = historyMessages.map(async (historyMessage) => {
@@ -45,6 +46,10 @@ const saveEmail: SQSHandler = async (event, context) => {
     });
 
     await Promise.all(messagePromises);
+    await updateLastHistoryId({
+      email: emailAddress,
+      lastHistoryId: historyId,
+    });
   });
 
   await Promise.all(promises);
