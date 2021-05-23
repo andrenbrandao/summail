@@ -67,13 +67,15 @@ it('should update user with the same email', async () => {
     refreshToken: 'refresh-token',
   });
 
+  const oldUser = await User.findOne();
+
   await saveUser({
     email: 'user@email.com',
     refreshToken: 'different-refresh-token',
   });
 
-  const users = await User.find();
-  expect(users.length).toEqual(1);
+  const user = await User.findOne();
+  expect(user.refreshToken).not.toEqual(oldUser.refreshToken);
 });
 
 it('should throw error if it fails to upsert', async () => {

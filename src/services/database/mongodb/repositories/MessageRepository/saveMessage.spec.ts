@@ -57,14 +57,22 @@ it('should create if does not yet exist', async () => {
   expect(messages.length).toEqual(1);
 });
 
-it('should throw error if create fails', async () => {
+it('should update an existing message', async () => {
+  const updateData = { ...messageData, raw: 'new-data' };
+
+  await saveMessage(messageData);
+  await saveMessage(updateData);
+
+  const message = await Message.findOne();
+  expect(message.raw).toEqual('new-data');
+});
+
+it('should throw error if it fails to upsert', async () => {
   jest
-    .spyOn(Message, 'create')
-    .mockImplementation(() =>
-      Promise.reject(new Error('Failed to create message')),
-    );
+    .spyOn(Message, 'updateOne')
+    .mockResolvedValue({ n: 0, ok: 0, nModified: 0 });
 
   await expect(saveMessage(messageData)).rejects.toThrow(
-    'Failed to create message',
+    'Could not update or upsert message.',
   );
 });

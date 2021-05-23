@@ -3,12 +3,18 @@ import { Message as IMessage } from '@shared/interfaces';
 import Message from '../../models/Message';
 
 const saveMessage = async (message: IMessage): Promise<void> => {
-  const { userEmail, receivedAt } = message;
-  logger.info('Saving message...', { userEmail, receivedAt });
+  const { userEmail, receivedAt, externalId } = message;
+  logger.info('Saving message...', { userEmail, receivedAt, externalId });
 
-  await Message.create(message);
+  const result = await Message.updateOne({ externalId }, message, {
+    upsert: true,
+  });
 
-  logger.info('Successfully saved message.');
+  if (!result.ok) {
+    throw new Error('Could not update or upsert message.');
+  }
+
+  logger.info('Successfully updated/upserted message.');
 };
 
 export default saveMessage;
