@@ -17,3 +17,6 @@ coverage
 # Dotenv
 !.env.example
 .env*
+
+# VSCode
+.vscode

@@ -29,6 +29,7 @@ module.exports = {
         devDependencies: ['**/*.spec.ts', '**/*.test.ts'],
       },
     ],
+    'no-use-before-define': ['error', { functions: false, classes: false }],
   },
   settings: {
     'import/resolver': {

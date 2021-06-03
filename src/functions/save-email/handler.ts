@@ -5,18 +5,9 @@ import { middyfy } from '@libs/lambda';
 import { logger } from '@shared/logger';
 
 import { getConnection } from '@libs/mongodb';
-import {
-  getUser,
-  updateLastHistoryId,
-} from '@services/database/mongodb/repositories/UserRepository';
-import { saveMessage } from '@services/database/mongodb/repositories/MessageRepository';
 import { Notification } from '@shared/interfaces';
 
-import {
-  refreshAccessToken,
-  getMessagesByHistoryId,
-  getMessageById,
-} from '@services/google';
+import { getUserAndSaveMessages } from './getUserAndSaveMessages';
 
 const saveEmail: SQSHandler = async (event, context) => {
   // Make sure to add this so you can re-use `conn` between function calls.
@@ -28,28 +19,7 @@ const saveEmail: SQSHandler = async (event, context) => {
 
   const promises = event.Records.map(async (record) => {
     const { emailAddress, historyId }: Notification = JSON.parse(record.body);
-
-    const { refreshToken, lastHistoryId } = await getUser(emailAddress);
-
-    logger.info('Refreshing access token.');
-    const accessToken = await refreshAccessToken(refreshToken);
-
-    const historyMessages = await getMessagesByHistoryId(
-      accessToken,
-      lastHistoryId,
-    );
-
-    const messagePromises = historyMessages.map(async (historyMessage) => {
-      const message = await getMessageById(accessToken, historyMessage.id);
-      await saveMessage({ ...message, userEmail: emailAddress });
-      return message;
-    });
-
-    await Promise.all(messagePromises);
-    await updateLastHistoryId({
-      email: emailAddress,
-      lastHistoryId: historyId,
-    });
+    await getUserAndSaveMessages(emailAddress, historyId);
   });
 
   await Promise.all(promises);

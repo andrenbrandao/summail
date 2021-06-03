@@ -1,17 +1,36 @@
-describe('when historyId is valid', () => {
-  it.todo('should save emails to the database');
+import type { Context, Callback } from 'aws-lambda';
+import { getConnection } from '@libs/mongodb';
+import { main as handler } from './handler';
+import { getUserAndSaveMessages } from './getUserAndSaveMessages';
+
+import mockEvent from './mock.json';
+
+jest.mock('@libs/mongodb');
+jest.mock('./getUserAndSaveMessages');
+
+const mockedGetUserAndSaveMessages = getUserAndSaveMessages as jest.MockedFunction<
+  typeof getUserAndSaveMessages
+>;
+
+it('should create a connection to mongodb', async () => {
+  const event = mockEvent;
+  const context = {} as Context;
+  const callback = null as Callback;
+
+  await handler(event, context, callback);
+
+  expect(getConnection).toHaveBeenCalledWith();
 });
 
-describe('when historyId is invalid', () => {
-  it.todo('should throw a invalid historyId error');
-});
+it('should call getUserAndSaveMessages with the emailAddress and historyId of the user', async () => {
+  const event = mockEvent;
+  const context = {} as Context;
+  const callback = null as Callback;
 
-describe('when the database fails to save', () => {
-  it.todo('should throw a save failed error');
-});
+  await handler(event, context, callback);
 
-describe('when a failure occurs', () => {
-  it.todo(
-    'should only discard the failed messages to the SQS Dead Letter Queue',
+  expect(mockedGetUserAndSaveMessages).toHaveBeenCalledWith(
+    'user@email.com',
+    123456,
   );
 });
