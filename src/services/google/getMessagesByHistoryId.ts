@@ -10,19 +10,13 @@ const getMessagesByHistoryId = async (
     return [];
   }
 
-  const oAuth2Client = new google.auth.OAuth2(
-    process.env.OAUTH_CLIENT_ID,
-    process.env.OAUTH_CLIENT_SECRET,
-  );
-
-  oAuth2Client.setCredentials({ access_token: accessToken });
-
-  const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
+  const gmail = google.gmail({ version: 'v1' });
 
   const response = await gmail.users.history.list({
     startHistoryId: historyId,
     historyTypes: ['MESSAGE_ADDED'],
     userId: 'me',
+    access_token: accessToken,
   });
 
   const messagesAdded = response.data.history.flatMap(
