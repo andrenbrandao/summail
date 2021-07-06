@@ -8,6 +8,7 @@ export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['**/*.spec.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/config/testing/jest.setup.ts'],
   moduleNameMapper: {
     '@libs/(.*)': '<rootDir>/src/libs/$1',
     '@shared/(.*)': '<rootDir>/src/shared/$1',

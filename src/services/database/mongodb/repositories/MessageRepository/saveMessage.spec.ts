@@ -1,41 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import mongoose, { ConnectOptions } from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Message as IMessage } from '@shared/interfaces';
 import Message from '../../models/Message';
 import saveMessage from './saveMessage';
-
-jest.mock('@libs/mongodb');
-
-// May require additional time for downloading MongoDB binaries
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
-
-let mongoServer;
-const opts: ConnectOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-};
-
-beforeAll(async () => {
-  mongoServer = new MongoMemoryServer();
-  const mongoUri = await mongoServer.getUri();
-  try {
-    await mongoose.connect(mongoUri, opts);
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-beforeEach(async () => {
-  await Message.deleteMany({});
-});
-
-afterAll(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
-});
 
 const messageData: IMessage = {
   userEmail: 'user@email.com',
