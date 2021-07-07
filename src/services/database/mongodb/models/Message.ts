@@ -20,6 +20,8 @@ const MessageSchema: Schema = new Schema(
       unique: true,
       immutable: true,
     },
+    from: { type: String, required: true },
+    to: { type: String, required: true },
     historyId: { type: String },
     labelIds: { type: [String] },
     raw: { type: String, required: true },

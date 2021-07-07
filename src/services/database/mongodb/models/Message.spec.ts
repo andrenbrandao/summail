@@ -1,30 +1,17 @@
 /* eslint-disable no-underscore-dangle */
-import { Message as IMessage } from '@shared/interfaces';
+import { messageMock } from '@shared/__mocks__';
 import Message from './Message';
 
-const messageData: IMessage = {
-  userEmail: 'user@email.com',
-  externalId: 'external-id',
-  historyId: '12345',
-  labelIds: ['INBOX', 'UNREAD'],
-  raw:
-    'PCFkb2N0eXBlIGh0bWw+DQo8aHRtbD4NCiAgPGhlYWQ+DQogICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCIgLz4NCiAgICA8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1VVEYtOCIgLz4NCiAgICA8dGl0bGU+U2ltcGxlIFRyYW5zYWN0aW9uYWwgRW1haWw8L3RpdGxlPg0KICA8L2hlYWQ+DQogIDxib2R5Pg0KICAgIDxoMT5TaW1wbGUgZW1haWwuPC9oMT4NCiAgPC9ib2R5Pg0KPC9odG1sPg==',
-  sizeEstimate: 62682,
-  snippet: 'This is a simple email',
-  threadId: '555',
-  receivedAt: new Date('2021-05-22T15:00:00Z'),
-};
-
 it('should be able to create a new message', async () => {
-  await Message.create(messageData);
+  await Message.create(messageMock);
   const message = await Message.findOne().lean();
 
-  expect(message).toMatchObject<IMessage>(messageData);
+  expect(message).toMatchObject(messageMock);
 });
 
 it('should not create message without userEmail', async () => {
   const invalidMessage = {
-    ...messageData,
+    ...messageMock,
     userEmail: undefined,
   };
 
@@ -34,16 +21,16 @@ it('should not create message without userEmail', async () => {
 });
 
 it('should not create message with same externalId', async () => {
-  await Message.create(messageData);
+  await Message.create(messageMock);
 
-  await expect(Message.create(messageData)).rejects.toThrowError(
+  await expect(Message.create(messageMock)).rejects.toThrowError(
     /E11000 duplicate key error dup key: { : "external-id" }/,
   );
 });
 
 it('should not create message without externalId', async () => {
   const invalidMessage = {
-    ...messageData,
+    ...messageMock,
     externalId: undefined,
   };
 
@@ -54,7 +41,7 @@ it('should not create message without externalId', async () => {
 
 it('should not create message without raw', async () => {
   const invalidMessage = {
-    ...messageData,
+    ...messageMock,
     raw: undefined,
   };
 

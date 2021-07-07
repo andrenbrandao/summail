@@ -2,7 +2,10 @@ import {
   getUser,
   updateLastHistoryId,
 } from '@services/database/mongodb/repositories/UserRepository';
-import { refreshAccessToken, getMessagesByHistoryId } from '@services/google';
+import {
+  refreshAccessToken,
+  getHistoryMessagesByHistoryId,
+} from '@services/google';
 import { saveUserLastMessages } from './saveUserLastMessages';
 
 export async function getUserAndSaveMessages(
@@ -13,7 +16,7 @@ export async function getUserAndSaveMessages(
 
   const accessToken = await refreshAccessToken(refreshToken);
 
-  const historyMessages = await getMessagesByHistoryId(
+  const historyMessages = await getHistoryMessagesByHistoryId(
     accessToken,
     lastHistoryId,
   );

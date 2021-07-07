@@ -1,32 +1,19 @@
 /* eslint-disable no-underscore-dangle */
-import { Message as IMessage } from '@shared/interfaces';
+import { messageMock } from '@shared/__mocks__';
 import Message from '../../models/Message';
 import saveMessage from './saveMessage';
 
-const messageData: IMessage = {
-  userEmail: 'user@email.com',
-  externalId: 'external-id',
-  historyId: '12345',
-  labelIds: ['INBOX', 'UNREAD'],
-  raw:
-    'PCFkb2N0eXBlIGh0bWw+DQo8aHRtbD4NCiAgPGhlYWQ+DQogICAgPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCIgLz4NCiAgICA8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1VVEYtOCIgLz4NCiAgICA8dGl0bGU+U2ltcGxlIFRyYW5zYWN0aW9uYWwgRW1haWw8L3RpdGxlPg0KICA8L2hlYWQ+DQogIDxib2R5Pg0KICAgIDxoMT5TaW1wbGUgZW1haWwuPC9oMT4NCiAgPC9ib2R5Pg0KPC9odG1sPg==',
-  sizeEstimate: 62682,
-  snippet: 'This is a simple email',
-  threadId: '555',
-  receivedAt: new Date('2021-05-22T15:00:00Z'),
-};
-
 it('should create if does not yet exist', async () => {
-  await saveMessage(messageData);
+  await saveMessage(messageMock);
 
   const messages = await Message.find();
   expect(messages.length).toEqual(1);
 });
 
 it('should update an existing message', async () => {
-  const updateData = { ...messageData, raw: 'new-data' };
+  const updateData = { ...messageMock, raw: 'new-data' };
 
-  await saveMessage(messageData);
+  await saveMessage(messageMock);
   await saveMessage(updateData);
 
   const message = await Message.findOne();
@@ -38,7 +25,7 @@ it('should throw error if it fails to upsert', async () => {
     .spyOn(Message, 'updateOne')
     .mockResolvedValue({ n: 0, ok: 0, nModified: 0 });
 
-  await expect(saveMessage(messageData)).rejects.toThrow(
+  await expect(saveMessage(messageMock)).rejects.toThrow(
     'Could not update or upsert message.',
   );
 });

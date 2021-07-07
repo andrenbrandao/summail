@@ -2,7 +2,7 @@ import { google } from 'googleapis';
 
 import { HistoryMessage } from '@shared/interfaces';
 
-const getMessagesByHistoryId = async (
+const getHistoryMessagesByHistoryId = async (
   accessToken: string,
   historyId: string,
 ): Promise<HistoryMessage[]> => {
@@ -27,4 +27,4 @@ const getMessagesByHistoryId = async (
   return messages;
 };
 
-export default getMessagesByHistoryId;
+export default getHistoryMessagesByHistoryId;
