@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Release
+        run: echo "Release"
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        run: yarn bootstrap
+
+      - name: Store ENV from AWS Secrets Manager
+        uses: say8425/aws-secrets-manager-actions@v2
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          SECRET_NAME: ${{ secrets.PROD_SECRET_NAME }}
+          OUTPUT_PATH: '.env'
+
+      - name: Serverless Deploy
+        uses: serverless/github-action@master
+        with:
+          args: deploy --stage=prod --verbose
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

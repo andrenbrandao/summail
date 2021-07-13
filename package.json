@@ -10,7 +10,8 @@
     "test": "jest --passWithNoTests --runInBand",
     "test:watch": "jest --watch --coverage --runInBand",
     "lint": "eslint '*/**/*.{js,ts}'",
-    "prettier": "prettier --write '*/**/*.{js,ts}'"
+    "prettier": "prettier --write '*/**/*.{js,ts}'",
+    "bootstrap": "rm -rf node_modules && yarn install"
   },
   "dependencies": {
     "@middy/core": "^1.5.0",

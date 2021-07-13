@@ -1,0 +1,42 @@
+name: Acceptance Stage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_stage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Install dependencies
+        run: yarn bootstrap
+
+      - name: Unit Test
+        run: yarn test
+
+      - name: Store ENV from AWS Secrets Manager
+        uses: say8425/aws-secrets-manager-actions@v2
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          SECRET_NAME: ${{ secrets.DEV_SECRET_NAME }}
+          OUTPUT_PATH: '.env'
+
+      - name: Deploy On Staging
+        uses: serverless/github-action@master
+        with:
+          args: deploy --stage=dev --verbose
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
