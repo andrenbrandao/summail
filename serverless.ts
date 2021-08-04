@@ -67,6 +67,7 @@ const serverlessConfiguration: AWS = {
       CRYPTO_SECRET_KEY: '${env:CRYPTO_SECRET_KEY}',
       GMAIL_NOTIFICATION_QUEUE_URL:
         '${self:custom.${self:custom.stage}.GMAIL_NOTIFICATION_QUEUE_URL}',
+      GOOGLE_PUBSUB_TOPIC_NAME: '${env:GOOGLE_PUBSUB_TOPIC_NAME}',
     },
     lambdaHashingVersion: '20201221',
   },
