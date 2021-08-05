@@ -5,7 +5,7 @@ import { middyfy } from '@libs/lambda';
 import { logger } from '@shared/logger';
 
 import { getConnection } from '@libs/mongodb';
-import { getUser } from '@services/database/mongodb/repositories/UserRepository';
+import { getUsers } from '@services/database/mongodb/repositories/UserRepository';
 import { keepMailboxSubscription } from '@services/google';
 
 const keepPubSubAlive: ScheduledHandler = async (event, context) => {
@@ -14,9 +14,16 @@ const keepPubSubAlive: ScheduledHandler = async (event, context) => {
 
   await getConnection();
 
-  const { email, refreshToken } = await getUser('johndoe@gmail.com');
-  logger.info(`Keeping Mailbox Subscription alive for: ${email}`);
-  await keepMailboxSubscription(refreshToken);
+  const users = await getUsers();
+
+  const promises = users.map(async (user) => {
+    const { email, refreshToken } = user;
+
+    logger.info(`Keeping Mailbox Subscription alive for: ${email}`);
+    await keepMailboxSubscription(refreshToken);
+  });
+
+  await Promise.all(promises);
 };
 
 export const main = middyfy(keepPubSubAlive);

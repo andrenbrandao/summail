@@ -1,6 +1,7 @@
 import type { Context, Callback } from 'aws-lambda';
-import { saveUser } from '@services/database/mongodb/repositories/UserRepository';
 import nock from 'nock';
+import { saveUser } from '@services/database/mongodb/repositories/UserRepository';
+
 import { main as handler } from './handler';
 import mockEvent from './mock.json';
 
