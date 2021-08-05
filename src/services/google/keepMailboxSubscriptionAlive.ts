@@ -1,7 +1,9 @@
 import { google } from 'googleapis';
 import { logger } from '@shared/logger';
 
-const keepMailboxSubscription = async (refreshToken: string): Promise<void> => {
+const keepMailboxSubscriptionAlive = async (
+  refreshToken: string,
+): Promise<void> => {
   logger.info('Calling watch on Gmail API');
   const oAuth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENT_ID,
@@ -21,4 +23,4 @@ const keepMailboxSubscription = async (refreshToken: string): Promise<void> => {
   logger.info(response);
 };
 
-export default keepMailboxSubscription;
+export default keepMailboxSubscriptionAlive;

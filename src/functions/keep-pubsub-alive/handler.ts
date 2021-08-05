@@ -6,7 +6,7 @@ import { logger } from '@shared/logger';
 
 import { getConnection } from '@libs/mongodb';
 import { getUsers } from '@services/database/mongodb/repositories/UserRepository';
-import { keepMailboxSubscription } from '@services/google';
+import { keepMailboxSubscriptionAlive } from '@services/google';
 
 const keepPubSubAlive: ScheduledHandler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -20,7 +20,7 @@ const keepPubSubAlive: ScheduledHandler = async (event, context) => {
     const { email, refreshToken } = user;
 
     logger.info(`Keeping Mailbox Subscription alive for: ${email}`);
-    await keepMailboxSubscription(refreshToken);
+    await keepMailboxSubscriptionAlive(refreshToken);
   });
 
   await Promise.all(promises);
