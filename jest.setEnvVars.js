@@ -7,3 +7,5 @@ process.env.GMAIL_NOTIFICATION_QUEUE_URL =
   'https://sqs.us-east-1.amazonaws.com/queue';
 process.env.GOOGLE_PUBSUB_TOPIC_NAME =
   'projects/weekly-newsletter-email/topics/gmail-inbox-push-dev';
+process.env.MESSAGE_PROCESSING_QUEUE_URL =
+  'https://sqs.us-east-1.amazonaws.com/message-processing-queue';
