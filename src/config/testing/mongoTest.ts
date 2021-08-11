@@ -9,7 +9,7 @@ const mockedGetConnection = getConnection as jest.MockedFunction<
 >;
 
 // May require additional time for downloading MongoDB binaries
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
 let mongoServer: MongoMemoryServer;
 const opts: ConnectOptions = {

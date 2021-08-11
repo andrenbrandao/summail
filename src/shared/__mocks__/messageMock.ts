@@ -1,6 +1,6 @@
 import { Message as IMessage } from '@shared/interfaces';
 
-const messageMock: IMessage = {
+export const messageMock: IMessage = {
   userEmail: 'user@gmail.com',
   from: 'sender@company.com',
   to: 'user+newsletter@gmail.com',
