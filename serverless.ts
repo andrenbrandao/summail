@@ -74,6 +74,8 @@ const serverlessConfiguration: AWS = {
       GMAIL_NOTIFICATION_QUEUE_URL:
         '${self:custom.${self:custom.stage}.GMAIL_NOTIFICATION_QUEUE_URL}',
       GOOGLE_PUBSUB_TOPIC_NAME: '${env:GOOGLE_PUBSUB_TOPIC_NAME}',
+      MESSAGE_PROCESSING_QUEUE_URL:
+        '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_QUEUE_URL}',
     },
     lambdaHashingVersion: '20201221',
   },

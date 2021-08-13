@@ -16,7 +16,7 @@ const getUserLastWeekMessages = async (
     receivedAt: {
       $gte: lastWeekDay,
     },
-  });
+  }).lean();
   return messages;
 };
 
