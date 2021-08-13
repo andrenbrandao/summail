@@ -91,4 +91,17 @@ describe("Read Last Week's Emails", () => {
       messages: [expectedSecondUserFirstEmail],
     });
   });
+
+  it('should not send data to the queue for users who do not have messages in the last week', async () => {
+    const event = {};
+    const context = {} as Context;
+    const callback = null as Callback;
+
+    await handler(event, context, callback);
+
+    expect(mockedSendMessage).not.toHaveBeenCalledWith({
+      MessageBody: expect.stringMatching(/markzuck@gmail.com/),
+      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/message-processing-queue',
+    });
+  });
 });
