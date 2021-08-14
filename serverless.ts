@@ -7,6 +7,7 @@ import {
   gmailPush,
   saveEmail,
   keepPubSubAlive,
+  readLastWeeksEmails,
 } from './src/functions';
 
 const serverlessConfiguration: AWS = {
@@ -22,6 +23,7 @@ const serverlessConfiguration: AWS = {
     stage: '${opt:stage, self:provider.stage}',
     local: {
       GMAIL_NOTIFICATION_QUEUE_URL: 'http://localhost:3000',
+      MESSAGE_PROCESSING_QUEUE_URL: 'http://localhost:3000',
     },
     dev: {
       GMAIL_NOTIFICATION_QUEUE_URL: {
@@ -36,6 +38,21 @@ const serverlessConfiguration: AWS = {
             { Ref: 'AWS::AccountId' },
             '/',
             { 'Fn::GetAtt': ['GmailNotificationQueue', 'QueueName'] },
+          ],
+        ],
+      },
+      MESSAGE_PROCESSING_QUEUE_URL: {
+        'Fn::Join': [
+          '',
+          [
+            'https://sqs.',
+            { Ref: 'AWS::Region' },
+            '.',
+            { Ref: 'AWS::URLSuffix' },
+            '/',
+            { Ref: 'AWS::AccountId' },
+            '/',
+            { 'Fn::GetAtt': ['MessageProcessingQueue', 'QueueName'] },
           ],
         ],
       },
@@ -60,6 +77,11 @@ const serverlessConfiguration: AWS = {
         Action: ['sqs:SendMessage'],
         Resource: { 'Fn::GetAtt': ['GmailNotificationQueue', 'Arn'] },
       },
+      {
+        Effect: 'Allow',
+        Action: ['sqs:SendMessage'],
+        Resource: { 'Fn::GetAtt': ['MessageProcessingQueue', 'Arn'] },
+      },
     ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -79,7 +101,14 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: '20201221',
   },
-  functions: { oauth, oauthCallback, gmailPush, saveEmail, keepPubSubAlive },
+  functions: {
+    oauth,
+    oauthCallback,
+    gmailPush,
+    saveEmail,
+    keepPubSubAlive,
+    readLastWeeksEmails,
+  },
   resources: {
     Resources: {
       GmailNotificationQueue: {
@@ -133,6 +162,60 @@ const serverlessConfiguration: AWS = {
           Queues: [
             {
               Ref: 'GmailNotificationQueue',
+            },
+          ],
+        },
+      },
+      MessageProcessingQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName:
+            '${self:service}-${self:custom.stage}_MessageProcessingQueue',
+          RedrivePolicy: {
+            deadLetterTargetArn: {
+              'Fn::GetAtt': ['MessageProcessingQueueDLQ', 'Arn'],
+            },
+            maxReceiveCount: 3,
+          },
+        },
+      },
+      MessageProcessingQueueDLQ: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName:
+            '${self:service}-${self:custom.stage}_MessageProcessingQueueDLQ',
+        },
+      },
+      MessageProcessingQueuePolicy: {
+        Type: 'AWS::SQS::QueuePolicy',
+        Properties: {
+          PolicyDocument: {
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Sid: 'allow-lambda-messages',
+                Effect: 'Allow',
+                Principal: '*',
+                Resource: {
+                  'Fn::GetAtt': ['MessageProcessingQueue', 'Arn'],
+                },
+                Action: 'SQS:SendMessage',
+                Condition: {
+                  ArnEquals: {
+                    'aws:SourceArn': {
+                      'Fn::GetAtt': [
+                        'ReadLastWeeksEmailsLambdaFunction',
+                        'Arn',
+                      ],
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          Queues: [
+            {
+              Ref: 'MessageProcessingQueue',
             },
           ],
         },
