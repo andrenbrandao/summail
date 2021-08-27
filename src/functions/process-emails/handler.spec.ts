@@ -15,14 +15,18 @@ describe("Process User's Emails", () => {
     messages,
   }: {
     userEmail: string;
-    messages: string[];
+    messages: string;
   }) => {
     const newEvent = {
-      ...mockEvent,
-      body: JSON.stringify({
-        userEmail,
-        messages,
-      }),
+      Records: [
+        {
+          ...mockEvent.Records[0],
+          body: JSON.stringify({
+            emailAddress: userEmail,
+            messages,
+          }),
+        },
+      ],
     };
 
     return newEvent;
@@ -38,11 +42,11 @@ describe("Process User's Emails", () => {
         // Arrange
         const message = generateMessage({
           userEmail: 'johndoe@gmail.com',
-          to: 'johndoe+newsletter@gmail.com ',
+          to: 'johndoe+newsletter@gmail.com',
         });
         const event = createEvent({
           userEmail: 'johndoe@gmail.com',
-          messages: [JSON.stringify(message)],
+          messages: JSON.stringify([message]),
         });
         const context = {} as Context;
         const callback = null as Callback;
