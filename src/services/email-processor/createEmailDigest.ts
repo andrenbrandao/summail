@@ -1,11 +1,36 @@
 import { Message } from '@shared/interfaces';
 
-const createEmailDigest = (messages: Message[]): string => {
-  const emails = messages.map((message) => {
+import { generateBoundaryId } from './generateBoundaryId';
+import { generateHeader } from './generateHeader';
+
+interface createEmailDigestDTO {
+  messages: Message[];
+  userEmail: string;
+}
+
+const createEmailDigest = ({
+  messages,
+  userEmail,
+}: createEmailDigestDTO): string => {
+  const boundaryId = generateBoundaryId();
+  const header = generateHeader({
+    boundaryId,
+    userEmail,
+    subject: 'Summary Emails',
+  });
+
+  const decodedEmails = messages.map((message) => {
     const decodedEmail = Buffer.from(message.raw, 'base64').toString();
     return decodedEmail;
   });
-  return emails.join(' ');
+
+  const body = decodedEmails.map((message) => {
+    return `--${boundaryId}\n${message}\n\n`;
+  });
+
+  const footer = `--${boundaryId}--`;
+
+  return `${header}\n\n${body}\n${footer}`;
 };
 
 export default createEmailDigest;

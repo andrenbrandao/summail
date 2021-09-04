@@ -11,7 +11,10 @@ describe('Create Email Digest', () => {
       });
 
       // Act
-      const result = createEmailDigest([firstMessage, secondMessage]);
+      const result = createEmailDigest({
+        messages: [firstMessage, secondMessage],
+        userEmail: 'receiver@gmail.com',
+      });
 
       // Assert
       expect(result).toMatch(/Simple email./);
