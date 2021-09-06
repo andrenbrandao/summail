@@ -13,16 +13,20 @@ const processEmails: SQSHandler = async (event) => {
   const promises = event.Records.map(async (record) => {
     const { emailAddress, messages } = JSON.parse(record.body);
 
-    const parsedMessages: Message[] = JSON.parse(messages);
+    const parsedMessages: Message[] = messages;
+
+    logger.info('Creating email digest...');
     const emailDigest = createEmailDigest({
       messages: parsedMessages,
       userEmail: emailAddress,
     });
 
+    logger.info(`Sending newsletter email to ${emailAddress}`);
     await sendEmail({
       userEmail: emailAddress,
       emailDigest,
     });
+    logger.info('Email Successfully Sent!');
   });
 
   await Promise.all(promises);

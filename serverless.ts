@@ -8,6 +8,7 @@ import {
   saveEmail,
   keepPubSubAlive,
   readLastWeeksEmails,
+  processEmails,
 } from './src/functions';
 
 const serverlessConfiguration: AWS = {
@@ -108,6 +109,7 @@ const serverlessConfiguration: AWS = {
     saveEmail,
     keepPubSubAlive,
     readLastWeeksEmails,
+    processEmails,
   },
   resources: {
     Resources: {
@@ -218,6 +220,30 @@ const serverlessConfiguration: AWS = {
               Ref: 'MessageProcessingQueue',
             },
           ],
+        },
+      },
+      SendEmailPolicy: {
+        Type: 'AWS::SES::EmailPolicy',
+        Properties: {
+          PolicyDocument: {
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Sid: 'allow-send-email',
+                Effect: 'Allow',
+                Principal: '*',
+                Resource: '*',
+                Action: ['ses:SendEmail', 'ses:SendRawEmail'],
+                Condition: {
+                  ArnEquals: {
+                    'aws:SourceArn': {
+                      'Fn::GetAtt': ['ProcessEmailsLambdaFunction', 'Arn'],
+                    },
+                  },
+                },
+              },
+            ],
+          },
         },
       },
     },

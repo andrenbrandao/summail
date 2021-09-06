@@ -1,6 +1,7 @@
 import type { Context, Callback } from 'aws-lambda';
 import { generateMessage } from '@shared/__mocks__';
 import { sendEmail } from '@services/ses';
+import { Message } from '@shared/interfaces';
 import { main as handler } from './handler';
 
 import mockEvent from './mock.json';
@@ -15,7 +16,7 @@ describe("Process User's Emails", () => {
     messages,
   }: {
     userEmail: string;
-    messages: string;
+    messages: Message[];
   }) => {
     const newEvent = {
       Records: [
@@ -46,7 +47,7 @@ describe("Process User's Emails", () => {
         });
         const event = createEvent({
           userEmail: 'johndoe@gmail.com',
-          messages: JSON.stringify([message]),
+          messages: [message],
         });
         const context = {} as Context;
         const callback = null as Callback;
