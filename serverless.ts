@@ -73,15 +73,23 @@ const serverlessConfiguration: AWS = {
       shouldStartNameWithService: true,
     },
     iamRoleStatements: [
+      // gmailPush function
       {
         Effect: 'Allow',
         Action: ['sqs:SendMessage'],
         Resource: { 'Fn::GetAtt': ['GmailNotificationQueue', 'Arn'] },
       },
+      // readLastWeekEmails function
       {
         Effect: 'Allow',
         Action: ['sqs:SendMessage'],
         Resource: { 'Fn::GetAtt': ['MessageProcessingQueue', 'Arn'] },
+      },
+      // processEmails function
+      {
+        Effect: 'Allow',
+        Action: ['ses:SendEmail', 'ses:SendRawEmail'],
+        Resource: '*',
       },
     ],
     environment: {
@@ -220,30 +228,6 @@ const serverlessConfiguration: AWS = {
               Ref: 'MessageProcessingQueue',
             },
           ],
-        },
-      },
-      SendEmailPolicy: {
-        Type: 'AWS::SES::EmailPolicy',
-        Properties: {
-          PolicyDocument: {
-            Version: '2012-10-17',
-            Statement: [
-              {
-                Sid: 'allow-send-email',
-                Effect: 'Allow',
-                Principal: '*',
-                Resource: '*',
-                Action: ['ses:SendEmail', 'ses:SendRawEmail'],
-                Condition: {
-                  ArnEquals: {
-                    'aws:SourceArn': {
-                      'Fn::GetAtt': ['ProcessEmailsLambdaFunction', 'Arn'],
-                    },
-                  },
-                },
-              },
-            ],
-          },
         },
       },
     },
