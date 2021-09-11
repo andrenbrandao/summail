@@ -20,6 +20,7 @@ const getHistoryMessagesByHistoryId = async (
       userId: 'me',
       access_token: accessToken,
     });
+    logger.info(response);
 
     const messagesAdded = response.data.history.flatMap(
       (history) => history.messagesAdded,
@@ -28,12 +29,9 @@ const getHistoryMessagesByHistoryId = async (
 
     return messages;
   } catch (error) {
-    if (error.response?.status !== 404) {
-      logger.error(error);
-      throw error;
-    }
-    logger.warn(
-      `Gmail returned 404 for historyId ${historyId}. It will be ignored to enable future calls.`,
+    logger.error(error);
+    logger.error(
+      `Gmail returned an error for historyId ${historyId}. It will be ignored to enable future calls.`,
     );
     return [];
   }
