@@ -12,11 +12,12 @@ const sendEmail = async ({
 }: ISendEmailDTO): Promise<void> => {
   const client = new SESV2({ region: 'us-east-1' });
 
+  logger.info({ emailDigest });
   const responseRaw = await client
     .sendEmail({
       FromEmailAddress: 'newsletter@andrebrandao.me',
       Destination: { ToAddresses: [userEmail] },
-      Content: { Raw: { Data: emailDigest } },
+      Content: { Raw: { Data: Buffer.from(emailDigest).toString('base64') } },
     })
     .promise();
 
