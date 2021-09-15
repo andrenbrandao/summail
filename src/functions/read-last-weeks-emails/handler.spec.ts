@@ -28,15 +28,21 @@ const firstUserEmailOneWeekBefore = generateMessage({
   receivedAt: new Date('2021-05-15T16:00:00Z'),
 });
 
-const firstUserEmailLaterThanOneWeekBefore = generateMessage({
-  userEmail: 'johndoe@gmail.com',
-  to: 'johndoe+newsletter@gmail.com',
-  receivedAt: new Date('2021-05-14T15:00:00Z'),
-});
-
 const secondUserEmailSameDay = generateMessage({
   userEmail: 'janeroe@gmail.com',
   to: 'janeroe+newsletter@gmail.com',
+  receivedAt: new Date('2021-05-22T15:00:00Z'),
+});
+
+const thirdUserEmailLaterThanOneWeekBefore = generateMessage({
+  userEmail: 'markzuck@gmail.com',
+  to: 'markzuck+newsletter@gmail.com',
+  receivedAt: new Date('2021-05-14T15:00:00Z'),
+});
+
+const fourthUserEmailWithoutNewsletterSuffix = generateMessage({
+  userEmail: 'zackwill@gmail.com',
+  to: 'zackwill@gmail.com',
   receivedAt: new Date('2021-05-22T15:00:00Z'),
 });
 
@@ -44,12 +50,15 @@ beforeEach(async () => {
   await saveUser({ email: 'johndoe@gmail.com', refreshToken: 'token-100' });
   await saveUser({ email: 'janeroe@gmail.com', refreshToken: 'token-200' });
   await saveUser({ email: 'markzuck@gmail.com', refreshToken: 'token-300' });
+  await saveUser({ email: 'zackwill@gmail.com', refreshToken: 'token-400' });
 
   await saveMessage({ ...firstUserEmailSameDay });
   await saveMessage({ ...firstUserEmailOneWeekBefore });
-  await saveMessage({ ...firstUserEmailLaterThanOneWeekBefore });
 
   await saveMessage({ ...secondUserEmailSameDay });
+
+  await saveMessage({ ...thirdUserEmailLaterThanOneWeekBefore });
+  await saveMessage({ ...fourthUserEmailWithoutNewsletterSuffix });
 });
 
 describe("Read Last Week's Emails", () => {
@@ -101,6 +110,19 @@ describe("Read Last Week's Emails", () => {
 
     expect(mockedSendMessage).not.toHaveBeenCalledWith({
       MessageBody: expect.stringMatching(/markzuck@gmail.com/),
+      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/message-processing-queue',
+    });
+  });
+
+  it('should not send emails that do not have a newsletter suffix', async () => {
+    const event = {};
+    const context = {} as Context;
+    const callback = null as Callback;
+
+    await handler(event, context, callback);
+
+    expect(mockedSendMessage).not.toHaveBeenCalledWith({
+      MessageBody: expect.stringMatching(/zackwill@gmail.com/),
       QueueUrl: 'https://sqs.us-east-1.amazonaws.com/message-processing-queue',
     });
   });
