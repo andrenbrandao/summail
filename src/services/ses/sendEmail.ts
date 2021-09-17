@@ -17,7 +17,7 @@ const sendEmail = async ({
     .sendEmail({
       FromEmailAddress: 'newsletter@andrebrandao.me',
       Destination: { ToAddresses: [userEmail] },
-      Content: { Raw: { Data: Buffer.from(emailDigest).toString('base64') } },
+      Content: { Raw: { Data: emailDigest } },
     })
     .promise();
 
