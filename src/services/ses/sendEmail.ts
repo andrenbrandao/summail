@@ -22,29 +22,6 @@ const sendEmail = async ({
     .promise();
 
   logger.info(responseRaw);
-
-  // Simple email sender
-  // TODO: Remove when RAW is fixed
-  const response = await client
-    .sendEmail({
-      FromEmailAddress: 'newsletter@andrebrandao.me',
-      Destination: { ToAddresses: [userEmail] },
-      Content: {
-        Simple: {
-          Body: {
-            Text: {
-              Data: 'Simple email.',
-            },
-          },
-          Subject: {
-            Data: 'Newsletter',
-          },
-        },
-      },
-    })
-    .promise();
-
-  logger.info(response);
 };
 
 export default sendEmail;
