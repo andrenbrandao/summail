@@ -24,9 +24,11 @@ const createEmailDigest = ({
     return decodedEmail;
   });
 
-  const body = decodedEmails.map((message) => {
-    return `--${boundaryId}\n${message}\n\n`;
-  });
+  const body = decodedEmails
+    .map((message) => {
+      return `--${boundaryId}\n${message}\n\n`;
+    })
+    .join('');
 
   const footer = `--${boundaryId}--`;
 
