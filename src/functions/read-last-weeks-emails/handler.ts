@@ -7,7 +7,6 @@ import { sendMessage } from '@services/sqs';
 import { getUsers } from '@services/database/mongodb/repositories/UserRepository';
 import { getUserLastWeekMessages } from '@services/database/mongodb/repositories/MessageRepository';
 import { getConnection } from '@libs/mongodb';
-import { filterNewsletterMessages } from './filterNewsletterMessages';
 
 const readLastWeeksEmails: ScheduledHandler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -19,15 +18,14 @@ const readLastWeeksEmails: ScheduledHandler = async (event, context) => {
 
   const promises = users.map(async (user) => {
     const userMessages = await getUserLastWeekMessages(user.email);
-    const filteredMessages = filterNewsletterMessages(user.email, userMessages);
 
-    if (filteredMessages.length > 0) {
+    if (userMessages.length > 0) {
       logger.info('Sending messages to be processed...', {
         email: user.email,
       });
       await sendMessage({
         MessageBody: JSON.stringify({
-          messages: filteredMessages,
+          messages: userMessages,
           emailAddress: user.email,
         }),
         QueueUrl: process.env.MESSAGE_PROCESSING_QUEUE_URL,

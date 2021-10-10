@@ -1,6 +1,7 @@
 import { saveMessage } from '@services/database/mongodb/repositories/MessageRepository';
-import { HistoryMessage } from '@shared/interfaces';
+import { HistoryMessage, Message } from '@shared/interfaces';
 import { getMessageById } from '@services/google';
+import { hasSuffixNewsletter } from './hasSuffixNewsletter';
 
 export async function saveUserLastMessages(
   historyMessages: HistoryMessage[],
@@ -8,13 +9,13 @@ export async function saveUserLastMessages(
   emailAddress: string,
 ): Promise<void> {
   const messagePromises = historyMessages.map(async (historyMessage) => {
-    await getAndSaveMessage(historyMessage);
+    const getMessageDTO = await getMessageById(accessToken, historyMessage.id);
+    const message: Message = { ...getMessageDTO, userEmail: emailAddress };
+
+    if (hasSuffixNewsletter(emailAddress, message)) {
+      await saveMessage(message);
+    }
   });
 
   await Promise.all(messagePromises);
-
-  async function getAndSaveMessage(historyMessage: HistoryMessage) {
-    const message = await getMessageById(accessToken, historyMessage.id);
-    await saveMessage({ ...message, userEmail: emailAddress });
-  }
 }

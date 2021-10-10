@@ -113,17 +113,4 @@ describe("Read Last Week's Emails", () => {
       QueueUrl: 'https://sqs.us-east-1.amazonaws.com/message-processing-queue',
     });
   });
-
-  it('should not send emails that do not have a newsletter suffix', async () => {
-    const event = {};
-    const context = {} as Context;
-    const callback = null as Callback;
-
-    await handler(event, context, callback);
-
-    expect(mockedSendMessage).not.toHaveBeenCalledWith({
-      MessageBody: expect.stringMatching(/zackwill@gmail.com/),
-      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/message-processing-queue',
-    });
-  });
 });
