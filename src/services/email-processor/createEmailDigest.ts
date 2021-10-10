@@ -16,7 +16,7 @@ const createEmailDigest = ({
   const header = generateHeader({
     boundaryId,
     userEmail,
-    subject: 'Summary Emails',
+    subject: 'Last Week Newsletters',
   });
 
   const decodedEmails = messages.map((message) => {
