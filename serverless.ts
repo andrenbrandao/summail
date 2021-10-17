@@ -238,9 +238,9 @@ const serverlessConfiguration: AWS = {
       },
       MessageProcessingBucket: {
         Type: 'AWS::S3::Bucket',
+        DeletionPolicy: 'Retain',
         Properties: {
           BucketName: '${self:service}-${self:custom.stage}-message-processing',
-          DeletionPolicy: 'Retain',
         },
       },
     },
