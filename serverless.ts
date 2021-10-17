@@ -57,6 +57,9 @@ const serverlessConfiguration: AWS = {
           ],
         ],
       },
+      MESSAGE_PROCESSING_BUCKET_NAME: {
+        Ref: 'MessageProcessingBucket',
+      },
     },
     prod: '${self:custom.dev}',
   },
@@ -113,6 +116,8 @@ const serverlessConfiguration: AWS = {
       GOOGLE_PUBSUB_TOPIC_NAME: '${env:GOOGLE_PUBSUB_TOPIC_NAME}',
       MESSAGE_PROCESSING_QUEUE_URL:
         '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_QUEUE_URL}',
+      MESSAGE_PROCESSING_BUCKET_NAME:
+        '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_BUCKET_NAME}',
     },
     lambdaHashingVersion: '20201221',
   },

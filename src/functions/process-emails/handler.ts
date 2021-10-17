@@ -6,6 +6,7 @@ import { logger } from '@shared/logger';
 import { sendEmail } from '@services/ses';
 import { createEmailDigest } from '@services/email-processor';
 import { Message } from '@shared/interfaces';
+import readFromS3Middleware from './read-from-s3-middleware/readFromS3Middleware';
 
 const processEmails: SQSHandler = async (event) => {
   logger.info(event);
@@ -32,4 +33,4 @@ const processEmails: SQSHandler = async (event) => {
   await Promise.all(promises);
 };
 
-export const main = middyfy(processEmails);
+export const main = middyfy(processEmails).use(readFromS3Middleware);
