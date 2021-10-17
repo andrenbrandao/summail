@@ -91,6 +91,12 @@ const serverlessConfiguration: AWS = {
         Action: ['ses:SendEmail', 'ses:SendRawEmail'],
         Resource: '*',
       },
+      // read from S3 Bucket: readLastWeekEmails and processEmails
+      {
+        Effect: 'Allow',
+        Action: ['s3:ListBucket', 's3:*Object*'],
+        Resource: { 'Fn::GetAtt': ['MessageProcessingBucket', 'Arn'] },
+      },
     ],
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -228,6 +234,13 @@ const serverlessConfiguration: AWS = {
               Ref: 'MessageProcessingQueue',
             },
           ],
+        },
+      },
+      MessageProcessingBucket: {
+        Type: 'AWS::S3::Bucket',
+        Properties: {
+          BucketName: '${self:service}-${self:custom.stage}-message-processing',
+          DeletionPolicy: 'Retain',
         },
       },
     },
