@@ -97,8 +97,13 @@ const serverlessConfiguration: AWS = {
       // read from S3 Bucket: readLastWeekEmails and processEmails
       {
         Effect: 'Allow',
-        Action: ['s3:*'],
-        Resource: { 'Fn::GetAtt': ['MessageProcessingBucket', 'Arn'] },
+        Action: ['s3:PutObject', 's3:GetObject', 's3:ListBucket'],
+        Resource: {
+          'Fn::Join': [
+            '',
+            [{ 'Fn::GetAtt': ['MessageProcessingBucket', 'Arn'] }, '/*'],
+          ],
+        },
       },
     ],
     environment: {
