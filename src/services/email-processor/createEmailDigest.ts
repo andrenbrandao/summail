@@ -1,7 +1,9 @@
 import { Message } from '@shared/interfaces';
 
+import { subWeeks } from 'date-fns';
 import { generateBoundaryId } from './generateBoundaryId';
 import { generateHeader } from './generateHeader';
+import { generateSubject } from './generateSubject';
 
 interface createEmailDigestDTO {
   messages: Message[];
@@ -16,7 +18,10 @@ const createEmailDigest = ({
   const header = generateHeader({
     boundaryId,
     userEmail,
-    subject: 'Last Week Newsletters',
+    subject: generateSubject({
+      from: subWeeks(new Date(), 1),
+      to: new Date(),
+    }),
   });
 
   const decodedEmails = messages.map((message) => {
