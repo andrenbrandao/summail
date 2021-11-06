@@ -14,6 +14,10 @@ describe('Create Email Digest', () => {
       const result = createEmailDigest({
         messages: [firstMessage, secondMessage],
         userEmail: 'receiver@gmail.com',
+        dateRange: {
+          from: new Date(),
+          to: new Date(),
+        },
       });
 
       // Assert
@@ -32,6 +36,10 @@ describe('Create Email Digest', () => {
       const result = createEmailDigest({
         messages: [firstMessage, secondMessage],
         userEmail: 'receiver@gmail.com',
+        dateRange: {
+          from: new Date(),
+          to: new Date(),
+        },
       });
 
       // Assert

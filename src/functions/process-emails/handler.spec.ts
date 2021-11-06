@@ -18,11 +18,14 @@ describe("Process User's Emails", () => {
     userEmail: string;
     messages: Message[];
   }) => {
+    const body = JSON.parse(mockEvent.Records[0].body);
+
     const newEvent = {
       Records: [
         {
           ...mockEvent.Records[0],
           body: JSON.stringify({
+            ...body,
             emailAddress: userEmail,
             messages,
           }),

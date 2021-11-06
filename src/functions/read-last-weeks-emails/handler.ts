@@ -7,6 +7,7 @@ import { sendMessage } from '@services/sqs';
 import { getUsers } from '@services/database/mongodb/repositories/UserRepository';
 import { getUserLastWeekMessages } from '@services/database/mongodb/repositories/MessageRepository';
 import { getConnection } from '@libs/mongodb';
+import { subWeeks } from 'date-fns';
 
 const readLastWeeksEmails: ScheduledHandler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -27,6 +28,10 @@ const readLastWeeksEmails: ScheduledHandler = async (event, context) => {
         MessageBody: JSON.stringify({
           messages: userMessages,
           emailAddress: user.email,
+          dateRange: {
+            from: subWeeks(new Date(), 1),
+            to: new Date(),
+          },
         }),
         QueueUrl: process.env.MESSAGE_PROCESSING_QUEUE_URL,
       });

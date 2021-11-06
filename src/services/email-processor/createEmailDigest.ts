@@ -1,6 +1,5 @@
 import { Message } from '@shared/interfaces';
 
-import { subWeeks } from 'date-fns';
 import { generateBoundaryId } from './generateBoundaryId';
 import { generateHeader } from './generateHeader';
 import { generateSubject } from './generateSubject';
@@ -8,20 +7,22 @@ import { generateSubject } from './generateSubject';
 interface createEmailDigestDTO {
   messages: Message[];
   userEmail: string;
+  dateRange: {
+    from: Date;
+    to: Date;
+  };
 }
 
 const createEmailDigest = ({
   messages,
   userEmail,
+  dateRange,
 }: createEmailDigestDTO): string => {
   const boundaryId = generateBoundaryId();
   const header = generateHeader({
     boundaryId,
     userEmail,
-    subject: generateSubject({
-      from: subWeeks(new Date(), 1),
-      to: new Date(),
-    }),
+    subject: generateSubject(dateRange),
   });
 
   const decodedEmails = messages.map((message) => {
