@@ -18,7 +18,7 @@ describe('when a get request is made', () => {
       statusCode: 302,
       headers: {
         Location:
-          'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.readonly&response_type=code&client_id=client-id&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fdev%2Foauth-callback',
+          'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.modify&response_type=code&client_id=client-id&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fdev%2Foauth-callback',
       },
     });
   });

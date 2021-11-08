@@ -4,7 +4,10 @@ import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
 import { middyfy } from '@libs/lambda';
 import { google } from 'googleapis';
 
-const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
+const SCOPES = [
+  'https://www.googleapis.com/auth/gmail.readonly',
+  'https://www.googleapis.com/auth/gmail.modify',
+];
 
 const oauth: APIGatewayProxyHandlerV2 = async () => {
   const oAuth2Client = new google.auth.OAuth2(
