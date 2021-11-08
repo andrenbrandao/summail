@@ -123,6 +123,7 @@ const serverlessConfiguration: AWS = {
         '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_QUEUE_URL}',
       MESSAGE_PROCESSING_BUCKET_NAME:
         '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_BUCKET_NAME}',
+      EMAIL_SENDER_ADDRESS: '${env:EMAIL_SENDER_ADDRESS}',
     },
     lambdaHashingVersion: '20201221',
   },

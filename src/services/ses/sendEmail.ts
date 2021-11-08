@@ -15,7 +15,7 @@ const sendEmail = async ({
   logger.info({ emailDigest });
   const responseRaw = await client
     .sendEmail({
-      FromEmailAddress: 'newsletter@andrebrandao.me',
+      FromEmailAddress: process.env.EMAIL_SENDER_ADDRESS,
       Destination: { ToAddresses: [userEmail] },
       Content: { Raw: { Data: emailDigest } },
     })
