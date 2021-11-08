@@ -7,6 +7,7 @@ import {
   getHistoryMessagesByHistoryId,
 } from '@services/google';
 import { logger } from '@shared/logger';
+import { archiveMessages } from './archiveMessages';
 import { saveUserLastMessages } from './saveUserLastMessages';
 
 export async function getUserAndSaveMessages(
@@ -25,7 +26,12 @@ export async function getUserAndSaveMessages(
     lastHistoryId,
   );
 
-  await saveUserLastMessages(historyMessages, accessToken, emailAddress);
+  const messages = await saveUserLastMessages(
+    historyMessages,
+    accessToken,
+    emailAddress,
+  );
+  await archiveMessages(messages, accessToken);
   await updateLastHistoryId({
     email: emailAddress,
     lastHistoryId: historyId,
