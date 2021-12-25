@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="Summail logo" width="300px" src=".github/logo.svg" style="padding:20px"/>
+  <img alt="Summail logo" width="300px" src=".github/assets/logo.svg" style="padding:20px"/>
 </div>
 
 <div align="center">
