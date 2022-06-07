@@ -19,6 +19,7 @@ const gmailPush: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   logger.info(event);
   const { message } = event.body;
   const { data } = message;
+  logger.info('Reading Gmail Notification...');
 
   const notification = Buffer.from(data, 'base64').toString('ascii');
   const parsedNotification: Notification = JSON.parse(notification);
