@@ -37,7 +37,7 @@ jobs:
           OUTPUT_PATH: '.env'
 
       - name: Deploy On Staging
-        uses: serverless/github-action@master
+        uses: serverless/github-action@v3
         with:
           args: deploy --stage=dev --verbose
         env:
