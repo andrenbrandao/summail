@@ -1190,9 +1190,9 @@
     traverse "^0.6.6"
 
 "@serverless/typescript@^2.16.0":
-  version "2.19.0"
-  resolved "https://registry.yarnpkg.com/@serverless/typescript/-/typescript-2.19.0.tgz#70c2557d4a016fec835f9dfe49c7035c9f534bdd"
-  integrity sha512-7zoNnVJ3NfaYvEbtf4pBUYmh9y7ko4SmOp9fGD90ebJnKD1nu8WYmtJBYsq5kl9xE9SyQSpMODxjEeQo+CS8SA==
+  version "2.71.0"
+  resolved "https://registry.yarnpkg.com/@serverless/typescript/-/typescript-2.71.0.tgz#98f0813992cca567e9e1ac768e1740ba2b70257d"
+  integrity sha512-Dh7zsUnBoBIZJbx2+oKd2E4pMEDGilgdcKU0fIctTa+mejI0zCOxwCtRQ4pNe6d5e/l5XDGwsU5N4w+fHPv79w==
 
 "@serverless/utils-china@^1.1.4":
   version "1.1.7"

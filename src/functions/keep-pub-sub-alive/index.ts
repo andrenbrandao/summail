@@ -11,7 +11,7 @@ const handler: AWS['functions']['handler'] = {
           '${self:service}-${opt:stage, self:provider.stage}-keepPubSubAlive',
         description:
           'Scheduled event to keep mailbox subscription alive in Gmail',
-        rate: 'cron(0 8 * * ? *)',
+        rate: ['cron(0 8 * * ? *)'],
       },
     },
   ],

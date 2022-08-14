@@ -10,7 +10,7 @@ const handler: AWS['functions']['handler'] = {
         name:
           '${self:service}-${opt:stage, self:provider.stage}-readLastWeeksEmails',
         description: 'Scheduled event to read last weeks emails.',
-        rate: 'cron(0 1 * * ? *)',
+        rate: ['cron(0 1 * * ? *)'],
       },
     },
   ],
