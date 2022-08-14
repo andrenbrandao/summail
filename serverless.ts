@@ -22,6 +22,10 @@ const serverlessConfiguration: AWS = {
     },
     stages: ['local', 'dev', 'prod'],
     stage: '${opt:stage, self:provider.stage}',
+    prune: {
+      automatic: true,
+      number: 3,
+    },
     local: {
       GMAIL_NOTIFICATION_QUEUE_URL: 'http://localhost:3000',
       MESSAGE_PROCESSING_QUEUE_URL: 'http://localhost:3000',
@@ -67,6 +71,7 @@ const serverlessConfiguration: AWS = {
     'serverless-webpack',
     'serverless-offline',
     'serverless-stage-manager',
+    'serverless-prune-plugin',
   ],
   provider: {
     name: 'aws',
