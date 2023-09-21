@@ -51,6 +51,7 @@
     "nock": "^13.1.1",
     "prettier": "^2.2.1",
     "serverless": "^2.68.0",
+    "serverless-domain-manager": "^7.1.2",
     "serverless-offline": "^6.8.0",
     "serverless-prune-plugin": "^2.0.1",
     "serverless-stage-manager": "^1.0.5",

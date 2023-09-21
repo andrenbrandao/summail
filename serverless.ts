@@ -66,12 +66,21 @@ const serverlessConfiguration: AWS = {
       },
     },
     prod: '${self:custom.dev}',
+    customDomain: {
+      domainName: '${self:custom.stage}-api.${env:DOMAIN}',
+      basePath: '',
+      endpointType: 'edge',
+      certificateArn: '${env:CERTIFICATE_ARN}',
+      createRoute53Record: true,
+      stage: '${self:custom.stage}',
+    },
   },
   plugins: [
     'serverless-webpack',
     'serverless-offline',
     'serverless-stage-manager',
     'serverless-prune-plugin',
+    'serverless-domain-manager',
   ],
   provider: {
     name: 'aws',
@@ -129,6 +138,7 @@ const serverlessConfiguration: AWS = {
       MESSAGE_PROCESSING_BUCKET_NAME:
         '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_BUCKET_NAME}',
       EMAIL_SENDER_ADDRESS: '${env:EMAIL_SENDER_ADDRESS}',
+      DOMAIN: '${env:DOMAIN}',
     },
     lambdaHashingVersion: '20201221',
   },
