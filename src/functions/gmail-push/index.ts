@@ -9,7 +9,7 @@ const handler: AWS['functions']['handler'] = {
         method: 'post',
         path: 'gmail-push',
         request: {
-          schema: {
+          schemas: {
             'application/json': schema,
           },
         },

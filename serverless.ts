@@ -13,7 +13,7 @@ import {
 
 const serverlessConfiguration: AWS = {
   service: 'weekly-newsletter-email',
-  frameworkVersion: '2',
+  frameworkVersion: '3',
   useDotenv: true,
   custom: {
     webpack: {
@@ -29,6 +29,9 @@ const serverlessConfiguration: AWS = {
     local: {
       GMAIL_NOTIFICATION_QUEUE_URL: 'http://localhost:3000',
       MESSAGE_PROCESSING_QUEUE_URL: 'http://localhost:3000',
+      MESSAGE_PROCESSING_BUCKET_NAME: {
+        Ref: 'MessageProcessingBucket',
+      },
     },
     dev: {
       GMAIL_NOTIFICATION_QUEUE_URL: {
@@ -84,7 +87,7 @@ const serverlessConfiguration: AWS = {
   ],
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime: 'nodejs18.x',
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
