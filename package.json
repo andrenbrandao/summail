@@ -55,7 +55,7 @@
     "serverless-offline": "^13.0.0",
     "serverless-prune-plugin": "^2.0.1",
     "serverless-stage-manager": "^1.0.5",
-    "serverless-webpack": "^5.2.0",
+    "serverless-webpack": "^5.13.0",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.10",
     "ts-node": "^9.1.1",
