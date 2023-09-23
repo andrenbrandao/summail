@@ -11,6 +11,7 @@ const handler: AWS['functions']['handler'] = {
       },
     },
   ],
+  timeout: 20,
 };
 
 export default handler;

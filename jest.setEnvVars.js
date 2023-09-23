@@ -9,4 +9,4 @@ process.env.GOOGLE_PUBSUB_TOPIC_NAME =
   'projects/weekly-newsletter-email/topics/gmail-inbox-push-dev';
 process.env.MESSAGE_PROCESSING_QUEUE_URL =
   'https://sqs.us-east-1.amazonaws.com/message-processing-queue';
-process.env.EMAIL_SENDER_ADDRESS = 'Summail <summail@andrebrandao.me>';
+process.env.EMAIL_SENDER_ADDRESS = 'Summail <andre@summail.app>';
