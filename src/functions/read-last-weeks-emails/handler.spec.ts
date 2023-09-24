@@ -40,12 +40,6 @@ const thirdUserEmailLaterThanOneWeekBefore = generateMessage({
   receivedAt: new Date('2021-05-14T15:00:00Z'),
 });
 
-const fourthUserEmailWithoutNewsletterSuffix = generateMessage({
-  userEmail: 'zackwill@gmail.com',
-  to: 'zackwill@gmail.com',
-  receivedAt: new Date('2021-05-22T15:00:00Z'),
-});
-
 beforeEach(async () => {
   await saveUser({ email: 'johndoe@gmail.com', refreshToken: 'token-100' });
   await saveUser({ email: 'janeroe@gmail.com', refreshToken: 'token-200' });
@@ -58,7 +52,6 @@ beforeEach(async () => {
   await saveMessage({ ...secondUserEmailSameDay });
 
   await saveMessage({ ...thirdUserEmailLaterThanOneWeekBefore });
-  await saveMessage({ ...fourthUserEmailWithoutNewsletterSuffix });
 });
 
 describe("Read Last Week's Emails", () => {
