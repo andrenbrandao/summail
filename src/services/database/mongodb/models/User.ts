@@ -3,7 +3,7 @@ import type { Document } from 'mongoose';
 
 export interface IUser {
   email: string;
-  refreshToken: string;
+  refreshToken?: string;
   lastHistoryId?: string;
 }
 
@@ -15,7 +15,7 @@ export interface IUserModel extends IUser, Document {
 const UserSchema = new Schema<IUserModel>(
   {
     email: { type: String, required: true, index: true, unique: true },
-    refreshToken: { type: String, required: true },
+    refreshToken: { type: String },
     lastHistoryId: { type: String },
   },
   { timestamps: true },

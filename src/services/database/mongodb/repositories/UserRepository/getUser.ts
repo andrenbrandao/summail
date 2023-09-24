@@ -11,7 +11,10 @@ const getUser = async (email: IUser['email']): Promise<IUser> => {
   }
 
   logger.info('Reading user: ', { email: user.email });
-  const decryptedRefreshToken = decrypt(user.refreshToken);
+  let decryptedRefreshToken;
+  if (user.refreshToken) {
+    decryptedRefreshToken = decrypt(user.refreshToken);
+  }
 
   return {
     email: user.email,

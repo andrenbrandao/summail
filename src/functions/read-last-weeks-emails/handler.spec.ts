@@ -41,10 +41,22 @@ const thirdUserEmailLaterThanOneWeekBefore = generateMessage({
 });
 
 beforeEach(async () => {
-  await saveUser({ email: 'johndoe@gmail.com', refreshToken: 'token-100' });
-  await saveUser({ email: 'janeroe@gmail.com', refreshToken: 'token-200' });
-  await saveUser({ email: 'markzuck@gmail.com', refreshToken: 'token-300' });
-  await saveUser({ email: 'zackwill@gmail.com', refreshToken: 'token-400' });
+  await saveUser({
+    email: 'johndoe@gmail.com',
+    refreshToken: 'token-100',
+  });
+  await saveUser({
+    email: 'janeroe@gmail.com',
+    refreshToken: 'token-200',
+  });
+  await saveUser({
+    email: 'markzuck@gmail.com',
+    refreshToken: 'token-300',
+  });
+  await saveUser({
+    email: 'zackwill@gmail.com',
+    refreshToken: 'token-400',
+  });
 
   await saveMessage({ ...firstUserEmailSameDay });
   await saveMessage({ ...firstUserEmailOneWeekBefore });

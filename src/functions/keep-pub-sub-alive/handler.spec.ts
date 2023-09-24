@@ -40,9 +40,18 @@ nock('https://oauth2.googleapis.com')
   });
 
 beforeEach(async () => {
-  await saveUser({ email: 'johndoe@gmail.com', refreshToken: 'token-100' });
-  await saveUser({ email: 'janeroe@gmail.com', refreshToken: 'token-200' });
-  await saveUser({ email: 'markzuck@gmail.com', refreshToken: 'token-300' });
+  await saveUser({
+    email: 'johndoe@gmail.com',
+    refreshToken: 'token-100',
+  });
+  await saveUser({
+    email: 'janeroe@gmail.com',
+    refreshToken: 'token-200',
+  });
+  await saveUser({
+    email: 'markzuck@gmail.com',
+    refreshToken: 'token-300',
+  });
 });
 
 describe('Keep PubSub Alive', () => {

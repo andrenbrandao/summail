@@ -9,6 +9,7 @@ import {
   keepPubSubAlive,
   readLastWeeksEmails,
   processEmails,
+  login,
 } from './src/functions';
 
 const serverlessConfiguration: AWS = {
@@ -142,6 +143,7 @@ const serverlessConfiguration: AWS = {
         '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_BUCKET_NAME}',
       EMAIL_SENDER_ADDRESS: '${env:EMAIL_SENDER_ADDRESS}',
       DOMAIN: '${env:DOMAIN}',
+      JWT_SECRET: '${env:JWT_SECRET}',
     },
     lambdaHashingVersion: '20201221',
   },
@@ -153,6 +155,7 @@ const serverlessConfiguration: AWS = {
     keepPubSubAlive,
     readLastWeeksEmails,
     processEmails,
+    login,
   },
   resources: {
     Resources: {
