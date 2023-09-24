@@ -9,6 +9,7 @@ import {
   keepPubSubAlive,
   readLastWeeksEmails,
   processEmails,
+  login,
 } from './src/functions';
 
 const serverlessConfiguration: AWS = {
@@ -153,6 +154,7 @@ const serverlessConfiguration: AWS = {
     keepPubSubAlive,
     readLastWeeksEmails,
     processEmails,
+    login,
   },
   resources: {
     Resources: {
