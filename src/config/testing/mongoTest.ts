@@ -1,33 +1,27 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import mongoose, { ConnectOptions } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { getConnection } from '@libs/mongodb';
-
-jest.mock('@libs/mongodb');
-const mockedGetConnection = getConnection as jest.MockedFunction<
-  typeof getConnection
->;
-
-// May require additional time for downloading MongoDB binaries
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
 
 let mongoServer: MongoMemoryServer;
 const opts: ConnectOptions = {
   useNewUrlParser: true,
-  useCreateIndex: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
+  autoIndex: true,
+  bufferCommands: false, // Disable mongoose buffering
 };
+mongoose.set('strictQuery', false);
 
 const connect = async (): Promise<void> => {
-  mongoServer = new MongoMemoryServer({
+  console.log('Creating a new instance!');
+  mongoServer = await MongoMemoryServer.create({
     instance: { dbName: 'mongodb-test' },
   });
-  const mongoUri = await mongoServer.getUri();
+  const mongoUri = mongoServer.getUri();
   try {
     await mongoose.connect(mongoUri, opts);
 
-    mockedGetConnection.mockResolvedValue(mongoose.connection);
+    process.env.MONGODB_URI = mongoUri;
   } catch (err) {
     console.error(err);
   }
@@ -42,7 +36,11 @@ const disconnect = async (): Promise<void> => {
 const clearDatabase = async (): Promise<void> => {
   const { collections } = mongoose.connection;
 
-  Object.values(collections).forEach((collection) => collection.deleteMany({}));
+  const promises = Object.values(collections).map(async (collection) =>
+    collection.deleteMany({}),
+  );
+
+  await Promise.all(promises);
 };
 
 export { connect, disconnect, clearDatabase };

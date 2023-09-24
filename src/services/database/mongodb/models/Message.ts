@@ -1,4 +1,5 @@
-import { Model, Schema, Document, model } from 'mongoose';
+import { model, Schema } from 'mongoose';
+import type { Document } from 'mongoose';
 import { Message } from '@shared/interfaces';
 
 export interface IMessageModel extends Message, Document {
@@ -6,7 +7,7 @@ export interface IMessageModel extends Message, Document {
   updatedAt: Date;
 }
 
-const MessageSchema: Schema = new Schema(
+const MessageSchema = new Schema<IMessageModel>(
   {
     userEmail: {
       type: String,
@@ -35,6 +36,6 @@ const MessageSchema: Schema = new Schema(
 
 MessageSchema.index({ userEmail: 1, receivedAt: 1 });
 
-const Message: Model<IMessageModel> = model('Message', MessageSchema);
+const Message = model<IMessageModel>('Message', MessageSchema);
 
 export default Message;

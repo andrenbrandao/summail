@@ -9,6 +9,8 @@ export default {
   testEnvironment: 'node',
   testMatch: ['**/*.spec.ts'],
   setupFilesAfterEnv: ['<rootDir>/src/config/testing/jest.setup.ts'],
+  globalSetup: '<rootDir>/src/config/testing/globalSetup.ts',
+  globalTeardown: '<rootDir>/src/config/testing/globalTeardown.ts',
   moduleNameMapper: {
     '@libs/(.*)': '<rootDir>/src/libs/$1',
     '@shared/(.*)': '<rootDir>/src/shared/$1',
