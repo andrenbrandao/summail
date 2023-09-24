@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import User from '../../models/User';
 import updateLastHistoryId from './updateLastHistoryId';
 

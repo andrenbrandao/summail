@@ -23,9 +23,7 @@ it('should fail if tries to create a new one with the same email', async () => {
       email: 'user@email.com',
       refreshToken: 'different-refresh-token',
     }),
-  ).rejects.toThrow(
-    'E11000 duplicate key error dup key: { : "user@email.com" }',
-  );
+  ).rejects.toThrow(/duplicate key error/);
 });
 
 it('should be able to update the lastHistoryId', async () => {

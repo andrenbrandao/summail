@@ -1,5 +1,5 @@
-import { disconnect } from './mongoTest';
+import { stopServer } from './mongoTest';
 
 export default async function globalTeardown(): Promise<void> {
-  await disconnect();
+  await stopServer();
 }

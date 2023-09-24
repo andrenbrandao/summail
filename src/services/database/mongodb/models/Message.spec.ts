@@ -24,7 +24,7 @@ it('should not create message with same externalId', async () => {
   await Message.create(messageMock);
 
   await expect(Message.create(messageMock)).rejects.toThrowError(
-    /E11000 duplicate key error dup key: { : "external-id" }/,
+    /duplicate key error/,
   );
 });
 
