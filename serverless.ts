@@ -143,6 +143,7 @@ const serverlessConfiguration: AWS = {
         '${self:custom.${self:custom.stage}.MESSAGE_PROCESSING_BUCKET_NAME}',
       EMAIL_SENDER_ADDRESS: '${env:EMAIL_SENDER_ADDRESS}',
       DOMAIN: '${env:DOMAIN}',
+      JWT_SECRET: '${env:JWT_SECRET}',
     },
     lambdaHashingVersion: '20201221',
   },

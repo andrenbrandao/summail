@@ -8,6 +8,7 @@ import { google } from 'googleapis';
 import { logger } from '@shared/logger';
 import { getConnection } from '@libs/mongodb';
 import { saveUser } from '@services/database/mongodb/repositories/UserRepository';
+import jwt from 'jsonwebtoken';
 
 const login: APIGatewayProxyHandlerV2 = async (event, context) => {
   // Make sure to add this so you can re-use `conn` between function calls.
@@ -20,28 +21,43 @@ const login: APIGatewayProxyHandlerV2 = async (event, context) => {
     process.env.OAUTH_CLIENT_ID,
     process.env.OAUTH_CLIENT_SECRET,
   );
+
   try {
     const ticket = await oAuth2Client.verifyIdToken({
       idToken: params.get('credential'),
     });
     const payload = ticket.getPayload();
-    console.log(payload);
 
     await getConnection();
     await saveUser({ email: payload.email });
 
+    const token = await jwt.sign(
+      { email: payload.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1d',
+      },
+    );
+
+    console.log(token);
     return {
       statusCode: 302,
       headers: {
         Location: 'http://localhost:3000/success',
       },
+      body: JSON.stringify({
+        token,
+      }),
     };
   } catch (error) {
     logger.error(error);
-    return formatJSONResponse({
-      statusCode: 500,
+    return {
+      statusCode: 302,
+      headers: {
+        Location: 'http://localhost:3000/login/failed',
+      },
       body: 'Internal server error',
-    });
+    };
   }
 };
 
