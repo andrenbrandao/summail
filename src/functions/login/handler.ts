@@ -8,6 +8,7 @@ import { logger } from '@shared/logger';
 import { getConnection } from '@libs/mongodb';
 import { saveUser } from '@services/database/mongodb/repositories/UserRepository';
 import jwt from 'jsonwebtoken';
+import cors from '@middy/http-cors';
 
 const TOKEN_EXPIRATION_1H = 3600;
 
@@ -59,4 +60,9 @@ const login: APIGatewayProxyHandlerV2 = async (event, context) => {
   };
 };
 
-export const main = middyfy(login);
+export const main = middyfy(login).use(
+  cors({
+    origin: process.env.WEB_URL,
+    credentials: true,
+  }),
+);

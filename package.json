@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@middy/core": "^1.5.0",
+    "@middy/http-cors": "^4.6.4",
     "@middy/http-json-body-parser": "^1.5.0",
     "aws-sdk": "^2.903.0",
     "date-fns": "^2.23.0",

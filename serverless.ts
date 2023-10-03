@@ -144,6 +144,7 @@ const serverlessConfiguration: AWS = {
       EMAIL_SENDER_ADDRESS: '${env:EMAIL_SENDER_ADDRESS}',
       DOMAIN: '${env:DOMAIN}',
       JWT_SECRET: '${env:JWT_SECRET}',
+      WEB_URL: '${env:WEB_URL}',
     },
     lambdaHashingVersion: '20201221',
   },

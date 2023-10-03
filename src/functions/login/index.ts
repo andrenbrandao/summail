@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 import type { AWS } from '@serverless/typescript';
 
 const handler: AWS['functions']['handler'] = {
@@ -7,6 +8,10 @@ const handler: AWS['functions']['handler'] = {
       http: {
         method: 'post',
         path: 'login',
+        cors: {
+          origin: '${env:WEB_URL}',
+          allowCredentials: true,
+        },
       },
     },
   ],

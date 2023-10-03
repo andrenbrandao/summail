@@ -2450,6 +2450,13 @@
   dependencies:
     once "^1.4.0"
 
+"@middy/http-cors@^4.6.4":
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/@middy/http-cors/-/http-cors-4.6.4.tgz#e3afee8242aa19e96367c8b13aa13f5fcf9a1a67"
+  integrity sha512-N269/RKmNyrKE31jP899GTQ/nVXMu/PXtukhnIUoTz/8d3Z47C5LBpoO7V90QEkQIa0s30NSCCz8URwwPWIH4g==
+  dependencies:
+    "@middy/util" "4.6.4"
+
 "@middy/http-json-body-parser@^1.5.0":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@middy/http-json-body-parser/-/http-json-body-parser-1.5.1.tgz#995dbe37d6df0c4a5cb6b14d90265b91c104e205"
@@ -2458,6 +2465,11 @@
     "@types/http-errors" "^1.6.1"
     content-type "^1.0.4"
     http-errors "^1.6.3"
+
+"@middy/util@4.6.4":
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/@middy/util/-/util-4.6.4.tgz#b4a6d7e1d047f9d1c54c50fbb4260bce310e718d"
+  integrity sha512-U9wQtmBlnHKdkTMUfdJXVkVRU0BKdXBOi3jFPalUVgZL/SlMACLyelitFUmNhfsjXBPvBdPJg7wadnAzzWRRZQ==
 
 "@mongodb-js/saslprep@^1.1.0":
   version "1.1.0"
