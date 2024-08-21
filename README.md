@@ -9,7 +9,7 @@
 <div align="center">
 <p>
   <a href="https://shields.io">
-    <img src="https://img.shields.io/badge/status-in%20development-yellow.svg" alt="status" style="max-width:100%;">
+    <img src="https://img.shields.io/badge/status-not%20maintained-yellow.svg" alt="status" style="max-width:100%;">
   </a>
 </p>
 </div>
