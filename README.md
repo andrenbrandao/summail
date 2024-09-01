@@ -14,6 +14,9 @@
 </p>
 </div>
 
+> [!NOTE]
+> This repository has been archived. This project was great to learn Serverless, AWS and Next.js. Nowadays, I see it as too much accidental complexity for side-projects.
+
 ## What is Summail
 
 This project consolidates your email subscriptions into a single weekly summary email.
